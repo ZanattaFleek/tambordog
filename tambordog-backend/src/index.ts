@@ -11,13 +11,13 @@ import { PorteTypes } from "./types/CaoTypes";
 AppDataSource.initialize()
   .then(() => {
 
+    /*
     AppDataSource.getRepository(Atleta).findOne({ where: { idAtleta: 1 } }).then( rsAtleta => {
 
       console.log(rsAtleta.caes)
 
     });
 
-    /*
     const clsAtleta = new ClsAtleta();
 
     const novoAtleta = new Atleta();

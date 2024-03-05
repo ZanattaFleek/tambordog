@@ -1,6 +1,12 @@
 import { DataSource } from "typeorm";
 import Cao from "./entity/Cao";
 import Atleta from "./entity/Atleta";
+import Categoria from "./entity/Categoria";
+import Inscricao from "./entity/Inscricao";
+import Prova from "./entity/Prova";
+import Raca from "./entity/Raca";
+import Sumula from "./entity/Sumula";
+import Campeonato from "./entity/Campeonato";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -11,7 +17,16 @@ export const AppDataSource = new DataSource({
   database: "producao_tambordog",
   synchronize: true,
   logging: false,
-  entities: [Cao,Atleta],
+  entities: [
+    Cao,
+    Atleta,
+    Categoria,
+    Campeonato,
+    Inscricao,
+    Prova,
+    Raca,
+    Sumula,
+  ],
   subscribers: [],
   migrations: [],
 });
