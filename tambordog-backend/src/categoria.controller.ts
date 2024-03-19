@@ -19,13 +19,6 @@ import ClsCategoriaController from "./categoria.controller.cls";
 export class CategoriaController {
   constructor() {} //private readonly appService: AppService
 
-  @Post("categoria")
-  incluirCategoria(
-    @Body("dados") dados: CategoriaInterface
-  ): Promise<RespostaPadraoInterface<CategoriaInterface>> {
-    return new ClsCategoriaController().incluirCategoria(dados);
-  }
-
   @Post("incluir")
   incluirGenerico(
     @Body("dados") dados: Record<string, any>,
@@ -34,6 +27,23 @@ export class CategoriaController {
     return new ClsCategoriaController().incluir(dados, entidade);
   }
 
+  @Put("alterar")
+  alterarGenerico(
+    @Body("dados") dados: Record<string, any>,
+    @Body("entidade") entidade: string
+  ): Promise<RespostaPadraoInterface<any>> {
+    return new ClsCategoriaController().incluir(dados, entidade);
+  }
+
+  @Delete("excluir")
+  excluirGenerico(
+    @Body("entidade") entidade: string,
+    @Body("criterio") criterio: Record<string, any>
+  ): Promise<RespostaPadraoInterface<any>> {
+    return new ClsCategoriaController().excluir(entidade, criterio);
+  }
+
+  /*
   @Get("categoria")
   getCategoria(@Query("descricao") descricao: string): Promise<Categoria[]> {
     return AppDataSource.getRepository(Categoria).find({
@@ -45,11 +55,12 @@ export class CategoriaController {
 
   @Put("/categoria")
   putCategoria(): string {
-    return "Put Categoria";
+    return "Put Pedro Categoria";
   }
 
   @Delete("/categoria")
   deleteCategoria(): string {
     return "Delete Categoria";
   }
+  */
 }
