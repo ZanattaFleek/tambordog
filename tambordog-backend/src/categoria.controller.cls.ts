@@ -1,7 +1,8 @@
 import { AppDataSource } from "./dataSource";
+import { RespostaPadraoInterface } from "./interfaces/padrao.interfaces";
 
 export default class ClsCategoriaController {
-  public excluir(entidade: string, criterio: Record<string, any>) {
+  public excluir(entidade: string, criterio: Record<string, any>): Promise<RespostaPadraoInterface<any>> {
     return AppDataSource.getRepository(entidade)
       .delete(criterio)
       .then((rs) => {
@@ -31,7 +32,7 @@ export default class ClsCategoriaController {
    * @param entidade
    * @returns
    */
-  public incluir(dados: Record<string, any>, entidade: string) {
+  public incluir(dados: Record<string, any>, entidade: string): Promise<RespostaPadraoInterface<any>> {
     return AppDataSource.getRepository(entidade)
       .save(dados)
       .then((rs) => {
