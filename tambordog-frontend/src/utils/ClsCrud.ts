@@ -1,4 +1,7 @@
-import { PadraoCrudInterface } from "../../../tambordog-backend/src/interfaces/padrao.interfaces"
+import {
+  PadraoCrudInterface,
+  RespostaPadraoInterface,
+} from "../../../tambordog-backend/src/interfaces/padrao.interfaces"
 import axios from "axios"
 
 export default class ClsCrud {
@@ -7,6 +10,35 @@ export default class ClsCrud {
     criterio,
     camposLike,
   }: PadraoCrudInterface): Promise<Array<any>> {
+    const dados: PadraoCrudInterface = {
+      entidade: entidade,
+      criterio: {
+        nome: criterio,
+      },
+      camposLike: camposLike,
+    }
+
+    const config = {
+      maxBodyLength: Infinity,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+
+    console.log(config)
+
+    return axios
+      .post<RespostaPadraoInterface<Array<any>>>(
+        "http://localhost:4000/consultar",
+        dados,
+        config
+      )
+      .then((rs) => {
+        console.log(rs.data.dados)
+        return []
+      })
+
+    /*
     let data: Record<string, any> = {
       entidade: entidade,
       criterio: { ...criterio },
@@ -21,8 +53,10 @@ export default class ClsCrud {
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(data),
+      data: data,
     }
+
+    console.log(data)
 
     return axios
       .get("http://localhost:4000/consultar", config)
@@ -33,5 +67,6 @@ export default class ClsCrud {
         console.log(error)
         return []
       })
+      */
   }
 }

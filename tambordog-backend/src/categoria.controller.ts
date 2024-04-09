@@ -43,7 +43,7 @@ export class CategoriaController {
     return new ClsCategoriaController().excluir(entidade, criterio);
   }
 
-  @Get("consultar")
+  @Post("consultar")
   getCategoria(
     @Body("entidade") entidade: string,
     @Body("criterio") criterio: Record<string, any>,
