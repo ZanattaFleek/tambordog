@@ -1,8 +1,39 @@
 import { AppDataSource } from "./dataSource";
-import { RespostaPadraoInterface } from "./interfaces/padrao.interfaces";
+import {
+  PadraoCrudInterface,
+  RespostaPadraoInterface,
+} from "./interfaces/padrao.interfaces";
+import { Like } from "typeorm";
 
 export default class ClsCategoriaController {
-  public excluir(entidade: string, criterio: Record<string, any>): Promise<RespostaPadraoInterface<any>> {
+  public consultar({
+    entidade,
+    criterio,
+    camposLike,
+  }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
+    let where: Record<string, any> = {};
+
+    where = { ...criterio };
+
+    camposLike.forEach((campo) => {
+      where[campo] = Like(where[campo]); // nome: Like('%a%')
+    });
+
+    return AppDataSource.getRepository(entidade)
+      .find({ where: where })
+      .then((rs) => {
+        return {
+          ok: true,
+          mensagem: "Pesquisa Concluída",
+          dados: rs,
+        };
+      });
+  }
+
+  public excluir(
+    entidade: string,
+    criterio: Record<string, any>
+  ): Promise<RespostaPadraoInterface<any>> {
     return AppDataSource.getRepository(entidade)
       .delete(criterio)
       .then((rs) => {
@@ -32,7 +63,10 @@ export default class ClsCategoriaController {
    * @param entidade
    * @returns
    */
-  public incluir(dados: Record<string, any>, entidade: string): Promise<RespostaPadraoInterface<any>> {
+  public incluir(
+    dados: Record<string, any>,
+    entidade: string
+  ): Promise<RespostaPadraoInterface<any>> {
     return AppDataSource.getRepository(entidade)
       .save(dados)
       .then((rs) => {

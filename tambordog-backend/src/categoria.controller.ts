@@ -43,16 +43,23 @@ export class CategoriaController {
     return new ClsCategoriaController().excluir(entidade, criterio);
   }
 
-  /*
-  @Get("categoria")
-  getCategoria(@Query("descricao") descricao: string): Promise<Categoria[]> {
-    return AppDataSource.getRepository(Categoria).find({
-      where: {
-        nome: Like("%".concat(descricao).concat("%")),
-      },
+  @Get("consultar")
+  getCategoria(
+    @Body("entidade") entidade: string,
+    @Body("criterio") criterio: Record<string, any>,
+    @Body("camposLike") camposLike: Array<string>
+  ): Promise<RespostaPadraoInterface<any>> {
+    console.log("Parametros Recebidos: ");
+    console.log(entidade, criterio, camposLike);
+
+    return new ClsCategoriaController().consultar({
+      entidade: entidade,
+      criterio: criterio,
+      camposLike: camposLike ? camposLike : [],
     });
   }
 
+  /*
   @Put("/categoria")
   putCategoria(): string {
     return "Put Pedro Categoria";

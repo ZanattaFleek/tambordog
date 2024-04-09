@@ -5,9 +5,12 @@ import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.in
 import { Button, Grid, Paper } from "@mui/material"
 import InputFormat from "../components/InputFormat"
 import ListCrud, { CabecalhoListCrudInterface } from "../components/ListCrud"
+import ClsCrud from "../utils/ClsCrud"
 
 export default function RacaCrud() {
   const [erros, setErros] = useState({})
+
+  const clsCrud = new ClsCrud()
 
   const [pesquisa, setPesquisa] = useState({
     descricao: "",
@@ -37,6 +40,20 @@ export default function RacaCrud() {
     { idRaca: "05", nome: "Golden" },
   ]
 
+  const btPesquisar = () => {
+    clsCrud
+      .consultar({
+        entidade: "Raca",
+        criterio: {
+          nome: "%".concat(pesquisa.descricao).concat("%"),
+        },
+        camposLike: ["nome"],
+      })
+      .then((rsRacas) => {
+        console.log(rsRacas)
+      })
+  }
+
   return (
     <>
       <Grid container justifyContent="center">
@@ -58,7 +75,7 @@ export default function RacaCrud() {
               </Grid>
 
               <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                <Button>Pesquisar</Button>
+                <Button onClick={() => btPesquisar()}>Pesquisar</Button>
               </Grid>
 
               <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>

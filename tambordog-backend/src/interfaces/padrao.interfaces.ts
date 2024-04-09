@@ -3,3 +3,9 @@ export interface RespostaPadraoInterface<T> {
   mensagem: string;
   dados?: T;
 }
+
+export interface PadraoCrudInterface {
+  entidade: string,
+  criterio: Record<string, any>,
+  camposLike?: Array<string>
+}
