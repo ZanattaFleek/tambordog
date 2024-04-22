@@ -49,9 +49,13 @@ export class CategoriaController {
     @Body("criterio") criterio: Record<string, any>,
     @Body("camposLike") camposLike: Array<string>
   ): Promise<RespostaPadraoInterface<any>> {
-    console.log("Parametros Recebidos: ");
-    console.log(entidade, criterio, camposLike);
-
+    console.log("====================");
+    console.log("Parametros do GetCategoria");
+    console.log("====================");
+    console.log("Criterio: ", criterio);
+    console.log("entidade: ", entidade);
+    console.log("camposLIke: ", camposLike);
+    console.log("====================");
     return new ClsCategoriaController().consultar({
       entidade: entidade,
       criterio: criterio,

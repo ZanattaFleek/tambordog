@@ -41,17 +41,17 @@ export default function ListCrud({
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              {cabecalho.map((cab) => (
-                <TableCell>{cab.titulo}</TableCell>
+              {cabecalho.map((cab, indice) => (
+                <TableCell key={indice}>{cab.titulo}</TableCell>
               ))}
               <TableCell>Opções</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {registros.map((reg) => (
-              <TableRow>
-                {cabecalho.map((cab) => (
-                  <TableCell>{reg[cab.nomeCampo]}</TableCell>
+            {registros.map((reg, indice) => (
+              <TableRow key={indice}>
+                {cabecalho.map((cab, indice) => (
+                  <TableCell key={indice}>{reg[cab.nomeCampo]}</TableCell>
                 ))}
                 <TableCell>
                   <Button onClick={() => btEditar(reg[campoId])}>Editar</Button>

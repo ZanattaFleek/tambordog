@@ -1,0 +1,6 @@
+export enum StatusForm {
+  INCLUIR = "INCLUIR",
+  ALTERAR = "ALTERAR",
+  PESQUISAR = "PESQUISAR",
+  EXCLUIR = "EXCLUIR"
+}

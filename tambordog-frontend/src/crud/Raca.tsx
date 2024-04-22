@@ -6,14 +6,25 @@ import { Button, Grid, Paper } from "@mui/material"
 import InputFormat from "../components/InputFormat"
 import ListCrud, { CabecalhoListCrudInterface } from "../components/ListCrud"
 import ClsCrud from "../utils/ClsCrud"
+import { StatusForm } from "../utils/ClsStatusForm"
+import Condicional from "../components/Condicional"
 
 export default function RacaCrud() {
   const [erros, setErros] = useState({})
+
+  const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
 
   const clsCrud = new ClsCrud()
 
   const [pesquisa, setPesquisa] = useState({
     descricao: "",
+  })
+
+  const [rsPesquisa, setRsPesquisa] = useState<Array<RacaInterface>>([])
+
+  const [rsDados, setRsDados] = useState<RacaInterface>({
+    nome: "",
+    idRaca: "",
   })
 
   const cabecalhoListCrud: Array<CabecalhoListCrudInterface> = [
@@ -29,17 +40,6 @@ export default function RacaCrud() {
     },
   ]
 
-  const registrosListCrud: Array<RacaInterface> = [
-    {
-      idRaca: "01",
-      nome: "Border",
-    },
-    { idRaca: "02", nome: "Samoyeda" },
-    { idRaca: "03", nome: "Pastor" },
-    { idRaca: "04", nome: "NI" },
-    { idRaca: "05", nome: "Golden" },
-  ]
-
   const btPesquisar = () => {
     clsCrud
       .consultar({
@@ -49,9 +49,17 @@ export default function RacaCrud() {
         },
         camposLike: ["nome"],
       })
-      .then((rsRacas) => {
-        console.log(rsRacas)
+      .then((rsRacas: Array<RacaInterface>) => {
+        setRsPesquisa(rsRacas)
       })
+  }
+
+  const btIncluir = () => {
+    setStatusForm(StatusForm.INCLUIR)
+  }
+
+  const btCancelar = () => {
+    setStatusForm(StatusForm.PESQUISAR)
   }
 
   return (
@@ -64,37 +72,56 @@ export default function RacaCrud() {
                 Cadastro de Raças
               </Grid>
 
-              <Grid item xs={12} sm={8} md={10}>
-                <InputFormat
-                  label="Pesquisa"
-                  setDados={setPesquisa}
-                  dados={pesquisa}
-                  campo="descricao"
-                  erros={erros}
-                />
-              </Grid>
+              <Condicional condicao={statusForm == StatusForm.PESQUISAR}>
+                <Grid item xs={12} sm={8} md={10}>
+                  <InputFormat
+                    label="Pesquisa"
+                    setDados={setPesquisa}
+                    dados={pesquisa}
+                    campo="descricao"
+                    erros={erros}
+                  />
+                </Grid>
 
-              <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                <Button onClick={() => btPesquisar()}>Pesquisar</Button>
-              </Grid>
+                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                  <Button onClick={() => btPesquisar()}>Pesquisar</Button>
+                </Grid>
 
-              <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                <Button>Incluir</Button>
-              </Grid>
+                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                  <Button onClick={() => btIncluir()}>Incluir</Button>
+                </Grid>
 
-              <Grid xs={12}>
-                <ListCrud
-                  cabecalho={cabecalhoListCrud}
-                  registros={registrosListCrud}
-                  campoId="idRaca"
-                />
-              </Grid>
+                <Grid item xs={12}>
+                  <ListCrud
+                    cabecalho={cabecalhoListCrud}
+                    registros={rsPesquisa}
+                    campoId="idRaca"
+                  />
+                </Grid>
+              </Condicional>
+
+              <Condicional condicao={statusForm == StatusForm.INCLUIR}>
+                <Grid item xs={12} sm={8} md={10}>
+                  <InputFormat
+                    label="Nome"
+                    setDados={setRsDados}
+                    dados={rsDados}
+                    campo="nome"
+                    erros={erros}
+                  />
+                </Grid>
+
+                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                  <Button onClick={() => btCancelar()}>Cancelar</Button>
+                </Grid>
+              </Condicional>
 
               {/*
-              <Grid item xs={12}>
-              {JSON.stringify(pesquisa)}
-              </Grid>
-  */}
+
+                <Grid item xs={12}>
+                  {JSON.stringify(rsRegistros)}
+                </Grid>
+                */}
             </Grid>
           </Paper>
         </Grid>

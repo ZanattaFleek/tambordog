@@ -12,9 +12,7 @@ export default class ClsCrud {
   }: PadraoCrudInterface): Promise<Array<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
-      criterio: {
-        nome: criterio,
-      },
+      criterio: criterio,
       camposLike: camposLike,
     }
 
@@ -25,8 +23,6 @@ export default class ClsCrud {
       },
     }
 
-    console.log(config)
-
     return axios
       .post<RespostaPadraoInterface<Array<any>>>(
         "http://localhost:4000/consultar",
@@ -34,8 +30,7 @@ export default class ClsCrud {
         config
       )
       .then((rs) => {
-        console.log(rs.data.dados)
-        return []
+        return rs.data.dados as any
       })
 
     /*

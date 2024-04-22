@@ -14,7 +14,8 @@ interface PropsInputInterface {
   mask?: string
   campo: string
   setDados: React.Dispatch<React.SetStateAction<any>>
-  dados: Record<string, string | number>
+  // TODO Revisar para um tipo adequado
+  dados: any
   erros: Record<string, string>
   type?: string
 }
@@ -55,7 +56,7 @@ const MaskCustom = forwardRef((props: any, ref: any) => {
  * @param erros - Objeto de Erro que caso exista o campo, será exibido
  * @returns void
  */
-export default function InputFormat({
+export default function InputFormat<T>({
   label,
   mask,
   setDados,

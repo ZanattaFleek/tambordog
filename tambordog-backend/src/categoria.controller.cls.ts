@@ -13,15 +13,30 @@ export default class ClsCategoriaController {
   }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
     let where: Record<string, any> = {};
 
+    console.log("====================");
+    console.log("Parametros do Consultar");
+    console.log("====================");
+    console.log("Criterio: ", criterio);
+    console.log("entidade: ", entidade);
+    console.log("camposLIke: ", camposLike);
+    console.log("====================");
+
+    // Recebo: { nome: '%Frank%' } --> Criterio
+        // Correto
+    // where = { nome: Like("%a%") }; 
+
     where = { ...criterio };
 
     camposLike.forEach((campo) => {
-      where[campo] = Like(where[campo]); // nome: Like('%a%')
-    });
+      where[campo] = Like(where[campo]); 
+    }); 
+
+    console.log("WHere: ", where);
 
     return AppDataSource.getRepository(entidade)
       .find({ where: where })
       .then((rs) => {
+        console.log("Pesquisa COncluida: ", rs, where);
         return {
           ok: true,
           mensagem: "Pesquisa Concluída",
