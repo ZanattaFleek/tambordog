@@ -21,10 +21,10 @@ export class CategoriaController {
 
   @Post("incluir")
   incluirGenerico(
-    @Body("dados") dados: Record<string, any>,
+    @Body("criterio") criterio: Record<string, any>,
     @Body("entidade") entidade: string
   ): Promise<RespostaPadraoInterface<any>> {
-    return new ClsCategoriaController().incluir(dados, entidade);
+    return new ClsCategoriaController().incluir(criterio, entidade);
   }
 
   @Put("alterar")
@@ -49,13 +49,6 @@ export class CategoriaController {
     @Body("criterio") criterio: Record<string, any>,
     @Body("camposLike") camposLike: Array<string>
   ): Promise<RespostaPadraoInterface<any>> {
-    console.log("====================");
-    console.log("Parametros do GetCategoria");
-    console.log("====================");
-    console.log("Criterio: ", criterio);
-    console.log("entidade: ", entidade);
-    console.log("camposLIke: ", camposLike);
-    console.log("====================");
     return new ClsCategoriaController().consultar({
       entidade: entidade,
       criterio: criterio,

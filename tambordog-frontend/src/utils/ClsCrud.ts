@@ -32,15 +32,15 @@ export default class ClsCrud {
       .then((rs) => {
         return rs.data.dados as any
       })
+  }
 
-    /*
-    let data: Record<string, any> = {
+  public incluir({
+    entidade,
+    criterio,
+  }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
+    const dados: PadraoCrudInterface = {
       entidade: entidade,
-      criterio: { ...criterio },
-    }
-
-    if (typeof camposLike !== "undefined") {
-      data.camposLike = [...camposLike]
+      criterio: criterio,
     }
 
     const config = {
@@ -48,20 +48,16 @@ export default class ClsCrud {
       headers: {
         "Content-Type": "application/json",
       },
-      data: data,
     }
 
-    console.log(data)
-
     return axios
-      .get("http://localhost:4000/consultar", config)
-      .then((response) => {
-        return response.data as Array<any>
+      .post<RespostaPadraoInterface<Array<any>>>(
+        "http://localhost:4000/incluir",
+        dados,
+        config
+      )
+      .then((rs) => {
+        return rs.data
       })
-      .catch((error) => {
-        console.log(error)
-        return []
-      })
-      */
   }
 }

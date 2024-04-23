@@ -13,25 +13,11 @@ export default class ClsCategoriaController {
   }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
     let where: Record<string, any> = {};
 
-    console.log("====================");
-    console.log("Parametros do Consultar");
-    console.log("====================");
-    console.log("Criterio: ", criterio);
-    console.log("entidade: ", entidade);
-    console.log("camposLIke: ", camposLike);
-    console.log("====================");
-
-    // Recebo: { nome: '%Frank%' } --> Criterio
-        // Correto
-    // where = { nome: Like("%a%") }; 
-
     where = { ...criterio };
 
     camposLike.forEach((campo) => {
-      where[campo] = Like(where[campo]); 
-    }); 
-
-    console.log("WHere: ", where);
+      where[campo] = Like(where[campo]);
+    });
 
     return AppDataSource.getRepository(entidade)
       .find({ where: where })
@@ -79,11 +65,11 @@ export default class ClsCategoriaController {
    * @returns
    */
   public incluir(
-    dados: Record<string, any>,
+    criterio: Record<string, any>,
     entidade: string
-  ): Promise<RespostaPadraoInterface<any>> {
+  ): Promise<RespostaPadraoInterface<any>> { 
     return AppDataSource.getRepository(entidade)
-      .save(dados)
+      .save(criterio)
       .then((rs) => {
         return {
           ok: true,
@@ -97,22 +83,5 @@ export default class ClsCategoriaController {
           mensagem: e.message,
         });
       });
-    /*
-    return AppDataSource.getRepository(entidade)
-      .save(dados)
-      .then((rs) => {
-        return {
-          ok: true,
-          mensagem: "Cadastro Realizado Com Sucesso",
-          dados: rs,
-        };
-      })
-      .catch((e) => {
-        return {
-          ok: false,
-          mensagem: e.message,
-        };
-      });
-      */
   }
 }

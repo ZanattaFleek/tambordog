@@ -8,6 +8,7 @@ import ListCrud, { CabecalhoListCrudInterface } from "../components/ListCrud"
 import ClsCrud from "../utils/ClsCrud"
 import { StatusForm } from "../utils/ClsStatusForm"
 import Condicional from "../components/Condicional"
+import ClsValidacao from "../utils/ClsValidacao"
 
 export default function RacaCrud() {
   const [erros, setErros] = useState({})
@@ -23,8 +24,7 @@ export default function RacaCrud() {
   const [rsPesquisa, setRsPesquisa] = useState<Array<RacaInterface>>([])
 
   const [rsDados, setRsDados] = useState<RacaInterface>({
-    nome: "",
-    idRaca: "",
+    nome: ""
   })
 
   const cabecalhoListCrud: Array<CabecalhoListCrudInterface> = [
@@ -54,12 +54,49 @@ export default function RacaCrud() {
       })
   }
 
-  const btIncluir = () => {
+  const btNovaRaca = () => {
     setStatusForm(StatusForm.INCLUIR)
   }
 
   const btCancelar = () => {
     setStatusForm(StatusForm.PESQUISAR)
+  }
+
+  const validarDados = (): boolean => {
+    const clsValidacao = new ClsValidacao()
+    let retorno: boolean = true
+    let tmpErros = {}
+
+    retorno = clsValidacao.naoVazio(
+      "nome",
+      rsDados,
+      tmpErros,
+      retorno,
+      "Nome da raça não pode ser vazio"
+    )
+
+    setErros(tmpErros)
+
+    return retorno
+  }
+
+  const btConfirmarInclusao = () => {
+    if (validarDados()) {
+      clsCrud
+        .incluir({
+          entidade: "Raca",
+          criterio: rsDados,
+        })
+        .then((rs) => {
+          if (rs.ok) {
+            setStatusForm(StatusForm.PESQUISAR)
+          }
+        })
+
+      // TODO - Executar Cofirmar INclusao
+      // Gravar no Banco de Dados
+      // Alterar o StatusFOrm se Confirmado para pesquisa
+    }
   }
 
   return (
@@ -88,7 +125,7 @@ export default function RacaCrud() {
                 </Grid>
 
                 <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                  <Button onClick={() => btIncluir()}>Incluir</Button>
+                  <Button onClick={() => btNovaRaca()}>Nova Raça</Button>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -109,6 +146,10 @@ export default function RacaCrud() {
                     campo="nome"
                     erros={erros}
                   />
+                </Grid>
+
+                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                  <Button onClick={() => btConfirmarInclusao()}>Incluir</Button>
                 </Grid>
 
                 <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
