@@ -2,21 +2,23 @@ import {
   PadraoCrudInterface,
   RespostaPadraoInterface,
 } from "../../../tambordog-backend/src/interfaces/padrao.interfaces"
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 
 export default class ClsCrud {
   public consultar({
     entidade,
     criterio,
     camposLike,
+    select,
   }: PadraoCrudInterface): Promise<Array<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
       criterio: criterio,
       camposLike: camposLike,
+      select: select,
     }
 
-    const config = {
+    const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +45,7 @@ export default class ClsCrud {
       criterio: criterio,
     }
 
-    const config = {
+    const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,
       headers: {
         "Content-Type": "application/json",
@@ -54,6 +56,33 @@ export default class ClsCrud {
       .post<RespostaPadraoInterface<Array<any>>>(
         "http://localhost:4000/incluir",
         dados,
+        config
+      )
+      .then((rs) => {
+        return rs.data
+      })
+  }
+
+  public excluir({
+    entidade,
+    criterio,
+  }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
+    const dados: PadraoCrudInterface = {
+      entidade: entidade,
+      criterio: criterio,
+    }
+
+    const config: AxiosRequestConfig = {
+      maxBodyLength: Infinity,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: dados,
+    }
+
+    return axios
+      .delete<RespostaPadraoInterface<Array<any>>>(
+        "http://localhost:4000/excluir",
         config
       )
       .then((rs) => {

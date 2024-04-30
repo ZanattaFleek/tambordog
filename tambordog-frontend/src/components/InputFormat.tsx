@@ -18,6 +18,8 @@ interface PropsInputInterface {
   dados: any
   erros: Record<string, string>
   type?: string
+  disabled?: boolean
+  autoFocus?: boolean
 }
 
 const MASK_DEFINITIONS = {
@@ -64,6 +66,8 @@ export default function InputFormat<T>({
   campo,
   erros,
   type = "text",
+  disabled = false,
+  autoFocus = false,
 }: PropsInputInterface) {
   return (
     <>
@@ -83,6 +87,8 @@ export default function InputFormat<T>({
           inputProps={{ mask: mask }}
           inputComponent={mask ? MaskCustom : undefined}
           type={type}
+          autoFocus={autoFocus}
+          disabled={disabled}
         />
 
         <Condicional condicao={typeof erros[campo] !== "undefined"}>

@@ -47,12 +47,14 @@ export class CategoriaController {
   getCategoria(
     @Body("entidade") entidade: string,
     @Body("criterio") criterio: Record<string, any>,
-    @Body("camposLike") camposLike: Array<string>
+    @Body("camposLike") camposLike: Array<string>,
+    @Body("select") select: Array<string>
   ): Promise<RespostaPadraoInterface<any>> {
     return new ClsCategoriaController().consultar({
       entidade: entidade,
       criterio: criterio,
       camposLike: camposLike ? camposLike : [],
+      select: select ? select : [],
     });
   }
 

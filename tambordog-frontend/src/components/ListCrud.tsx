@@ -20,19 +20,23 @@ interface PropsInterface {
   cabecalho: Array<CabecalhoListCrudInterface>
   registros: Array<any>
   campoId: string
+  onEditar: (id: string | number) => void
+  onExcluir: (id: string | number) => void
 }
 
 export default function ListCrud({
   cabecalho,
   registros,
   campoId,
+  onEditar,
+  onExcluir,
 }: PropsInterface) {
   const btEditar = (id: string | number) => {
-    alert("Editar ".concat(id.toString()))
+    onEditar(id.toString())
   }
 
   const btExcluir = (id: string | number) => {
-    alert("Excluir ".concat(id.toString()))
+    onExcluir(id.toString())
   }
 
   return (

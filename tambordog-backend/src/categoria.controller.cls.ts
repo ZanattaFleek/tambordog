@@ -10,6 +10,7 @@ export default class ClsCategoriaController {
     entidade,
     criterio,
     camposLike,
+    select,
   }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
     let where: Record<string, any> = {};
 
@@ -19,10 +20,11 @@ export default class ClsCategoriaController {
       where[campo] = Like(where[campo]);
     });
 
+    AppDataSource.getRepository(entidade);
+
     return AppDataSource.getRepository(entidade)
-      .find({ where: where })
+      .find({ where: where, select: select })
       .then((rs) => {
-        console.log("Pesquisa COncluida: ", rs, where);
         return {
           ok: true,
           mensagem: "Pesquisa Concluída",
@@ -67,7 +69,7 @@ export default class ClsCategoriaController {
   public incluir(
     criterio: Record<string, any>,
     entidade: string
-  ): Promise<RespostaPadraoInterface<any>> { 
+  ): Promise<RespostaPadraoInterface<any>> {
     return AppDataSource.getRepository(entidade)
       .save(criterio)
       .then((rs) => {

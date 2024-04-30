@@ -24,15 +24,10 @@ export default function RacaCrud() {
   const [rsPesquisa, setRsPesquisa] = useState<Array<RacaInterface>>([])
 
   const [rsDados, setRsDados] = useState<RacaInterface>({
-    nome: ""
+    nome: "",
   })
 
   const cabecalhoListCrud: Array<CabecalhoListCrudInterface> = [
-    {
-      titulo: "id",
-      alinhamento: "left",
-      nomeCampo: "idRaca",
-    },
     {
       titulo: "Nome",
       alinhamento: "left",
@@ -48,6 +43,7 @@ export default function RacaCrud() {
           nome: "%".concat(pesquisa.descricao).concat("%"),
         },
         camposLike: ["nome"],
+        select: ["idRaca", "nome"],
       })
       .then((rsRacas: Array<RacaInterface>) => {
         setRsPesquisa(rsRacas)
@@ -89,14 +85,52 @@ export default function RacaCrud() {
         })
         .then((rs) => {
           if (rs.ok) {
+            btPesquisar()
             setStatusForm(StatusForm.PESQUISAR)
           }
         })
-
-      // TODO - Executar Cofirmar INclusao
-      // Gravar no Banco de Dados
-      // Alterar o StatusFOrm se Confirmado para pesquisa
     }
+  }
+
+  const btConfirmarExclusao = () => {
+    clsCrud
+      .excluir({
+        entidade: "Raca",
+        criterio: rsDados,
+      })
+      .then((rs) => {
+        if (rs.ok) {
+          btPesquisar()
+          setStatusForm(StatusForm.PESQUISAR)
+        }
+      })
+  }
+
+  const pesquisaPorId = (id: string | number): Promise<RacaInterface> => {
+    return clsCrud
+      .consultar({
+        entidade: "Raca",
+        criterio: {
+          idRaca: id,
+        },
+      })
+      .then((rsRaca: Array<RacaInterface>) => {
+        return rsRaca[0]
+      })
+  }
+
+  const onEditar = (id: string | number) => {
+    pesquisaPorId(id).then((rsRaca) => {
+      setRsDados(rsRaca)
+      setStatusForm(StatusForm.ALTERAR)
+    })
+  }
+
+  const onExcluir = (id: string | number) => {
+    pesquisaPorId(id).then((rsRaca) => {
+      setRsDados(rsRaca)
+      setStatusForm(StatusForm.EXCLUIR)
+    })
   }
 
   return (
@@ -133,11 +167,13 @@ export default function RacaCrud() {
                     cabecalho={cabecalhoListCrud}
                     registros={rsPesquisa}
                     campoId="idRaca"
+                    onEditar={onEditar}
+                    onExcluir={onExcluir}
                   />
                 </Grid>
               </Condicional>
 
-              <Condicional condicao={statusForm == StatusForm.INCLUIR}>
+              <Condicional condicao={statusForm !== StatusForm.PESQUISAR}>
                 <Grid item xs={12} sm={8} md={10}>
                   <InputFormat
                     label="Nome"
@@ -145,12 +181,31 @@ export default function RacaCrud() {
                     dados={rsDados}
                     campo="nome"
                     erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
                   />
                 </Grid>
 
-                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                  <Button onClick={() => btConfirmarInclusao()}>Incluir</Button>
-                </Grid>
+                <Condicional
+                  condicao={[StatusForm.INCLUIR, StatusForm.ALTERAR].includes(
+                    statusForm
+                  )}
+                >
+                  <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                    <Button onClick={() => btConfirmarInclusao()}>
+                      {statusForm == StatusForm.INCLUIR ? "Incluir" : "Alterar"}
+                    </Button>
+                  </Grid>
+                </Condicional>
+
+                <Condicional
+                  condicao={[StatusForm.EXCLUIR].includes(statusForm)}
+                >
+                  <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
+                    <Button onClick={() => btConfirmarExclusao()}>
+                      Excluir
+                    </Button>
+                  </Grid>
+                </Condicional>
 
                 <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
                   <Button onClick={() => btCancelar()}>Cancelar</Button>

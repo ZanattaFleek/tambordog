@@ -12,6 +12,7 @@ import { Outlet } from "react-router-dom"
 import Condicional from "./components/Condicional"
 import MenuInferior from "./layout/MenuInferior"
 import RacaCrud from "./crud/Raca"
+import EventosEmAberto from "./eventos/EventosEmAberto"
 
 function App() {
   const { usuarioState, setUsuarioState } = useUsuarioState()
@@ -28,19 +29,14 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <ContextoGlobal.Provider value={ContextoGlobalDefault}>
-          <RacaCrud />
-
-          {/*
-          
           <Condicional condicao={usuarioState.logado}>
             <Outlet />
             <MenuInferior />
           </Condicional>
 
           <Condicional condicao={!usuarioState.logado}>
-            <Login />
+            <EventosEmAberto />
           </Condicional>
-          */}
         </ContextoGlobal.Provider>
       </ThemeProvider>
     </>

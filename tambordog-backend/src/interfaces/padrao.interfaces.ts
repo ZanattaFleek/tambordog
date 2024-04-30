@@ -5,7 +5,8 @@ export interface RespostaPadraoInterface<T> {
 }
 
 export interface PadraoCrudInterface {
-  entidade: string,
-  criterio: Record<string, any>,
-  camposLike?: Array<string>
+  entidade: string;
+  criterio: Record<string, any>;
+  camposLike?: Array<string>;
+  select?: Array<string>;
 }
