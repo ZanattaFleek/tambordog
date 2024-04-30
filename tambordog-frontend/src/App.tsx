@@ -34,8 +34,20 @@ function App() {
             <MenuInferior />
           </Condicional>
 
-          <Condicional condicao={!usuarioState.logado}>
+          <Condicional
+            condicao={
+              !usuarioState.logado && !window.location.href.includes("Login")
+            }
+          >
             <EventosEmAberto />
+          </Condicional>
+          {window.location.href}
+          <Condicional
+            condicao={
+              !usuarioState.logado && window.location.href.includes("Login")
+            }
+          >
+            <Login />
           </Condicional>
         </ContextoGlobal.Provider>
       </ThemeProvider>
