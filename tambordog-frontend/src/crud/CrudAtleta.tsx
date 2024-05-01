@@ -55,9 +55,9 @@ export default function CrudAtleta() {
                 <InputFormat
                   label="CPF"
                   mask="000.000.000-00"
-                  setDados={setDados}
+                  setState={setDados}
                   dados={dados}
-                  campo="cpf"
+                  field="cpf"
                   erros={erros}
                 />
               </Grid>
@@ -65,19 +65,20 @@ export default function CrudAtleta() {
               <Grid item xs={12} md={8} sx={{ mt: 2, pl: { md: 1 } }}>
                 <InputFormat
                   label="Nome"
-                  setDados={setDados}
+                  setState={setDados}
                   dados={dados}
-                  campo="nome"
+                  field="nome"
                   erros={erros}
                 />
               </Grid>
 
               <Grid item xs={12} md={4} sx={{ mt: 2 }}>
-                <InputPassword
-                  campo="senha"
+                <InputFormat
+                  type="password"
+                  field="senha"
                   label="Senha"
                   dados={dados}
-                  setDados={setDados}
+                  setState={setDados}
                   erros={erros}
                 />
               </Grid>
@@ -85,9 +86,9 @@ export default function CrudAtleta() {
               <Grid item xs={12} md={4} sx={{ mt: 2, pl: { md: 1 } }}>
                 <InputFormat
                   label="Data de Nascimento"
-                  setDados={setDados}
+                  setState={setDados}
                   dados={dados}
-                  campo="dataNascimento"
+                  field="dataNascimento"
                   erros={erros}
                   type="date"
                 />
@@ -101,9 +102,9 @@ export default function CrudAtleta() {
                       : "(00) 00000-0000"
                   }
                   label="Telefone"
-                  setDados={setDados}
+                  setState={setDados}
                   dados={dados}
-                  campo="telefone"
+                  field="telefone"
                   erros={erros}
                   type="tel"
                 />
@@ -113,9 +114,9 @@ export default function CrudAtleta() {
             <Grid item xs={12} sx={{ mt: 2 }}>
               <InputFormat
                 label="e-mail"
-                setDados={setDados}
+                setState={setDados}
                 dados={dados}
-                campo="email"
+                field="email"
                 erros={erros}
                 type="email"
               />
@@ -124,9 +125,9 @@ export default function CrudAtleta() {
             <Grid item xs={12} sx={{ mt: 2 }}>
               <InputSelect
                 label="Vinculo"
-                setDados={setDados}
+                setState={setDados}
                 dados={dados}
-                campo="idEscola"
+                field="idEscola"
                 erros={erros}
                 opcoes={[
                   { idEscola: 0, descricao: "Sem Escola" },

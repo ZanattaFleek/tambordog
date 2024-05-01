@@ -1,14 +1,17 @@
 import React from "react"
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material"
+
+import TableContainer from "@mui/material/TableContainer"
+import Table from "@mui/material/Table"
+import TableHead from "@mui/material/TableHead"
+import TableBody from "@mui/material/TableBody"
+import TableRow from "@mui/material/TableRow"
+import TableCell from "@mui/material/TableCell"
+import Paper from "@mui/material/Paper"
+import Button from "@mui/material/Button"
+
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded"
+import EditRoundedIcon from "@mui/icons-material/EditRounded"
+import { IconButton } from "@mui/material"
 
 export interface CabecalhoListCrudInterface {
   titulo: string
@@ -58,10 +61,23 @@ export default function ListCrud({
                   <TableCell key={indice}>{reg[cab.nomeCampo]}</TableCell>
                 ))}
                 <TableCell>
-                  <Button onClick={() => btEditar(reg[campoId])}>Editar</Button>
-                  <Button onClick={() => btExcluir(reg[campoId])}>
-                    Excluir
-                  </Button>
+                  <IconButton
+                    color="primary"
+                    size="large"
+                    sx={{ ml: 2 }}
+                    onClick={() => btExcluir(reg[campoId])}
+                  >
+                    <DeleteOutlineRoundedIcon />
+                  </IconButton>
+
+                  <IconButton
+                    color="primary"
+                    size="large"
+                    sx={{ ml: 2 }}
+                    onClick={() => btEditar(reg[campoId])}
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

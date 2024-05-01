@@ -1,14 +1,24 @@
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
 
-import { Button, Grid, Paper } from "@mui/material"
+import { Grid, IconButton, Paper } from "@mui/material"
 import InputFormat from "../components/InputFormat"
-import ListCrud, { CabecalhoListCrudInterface } from "../components/ListCrud"
 import ClsCrud from "../utils/ClsCrud"
 import { StatusForm } from "../utils/ClsStatusForm"
 import Condicional from "../components/Condicional"
 import ClsValidacao from "../utils/ClsValidacao"
+
+import AddCircleIcon from "@mui/icons-material/AddCircle"
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded"
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded"
+
+import {
+  ContextoGlobal,
+  ContextoGlobalInterface,
+} from "../globalstate/ContextoGlobal"
+import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 
 export default function CrudRaca() {
   const [erros, setErros] = useState({})
@@ -27,11 +37,11 @@ export default function CrudRaca() {
     nome: "",
   })
 
-  const cabecalhoListCrud: Array<CabecalhoListCrudInterface> = [
+  const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
-      titulo: "Nome",
+      cabecalho: "Nome",
       alinhamento: "left",
-      nomeCampo: "nome",
+      campo: "nome",
     },
   ]
 
@@ -133,82 +143,116 @@ export default function CrudRaca() {
     })
   }
 
+  const { layoutState, setLayoutState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
+  useEffect(() => {
+    setLayoutState({ ...layoutState, titulo: "Cadatro de Raças" })
+  }, [])
+
   return (
     <>
       <Grid container justifyContent="center">
-        <Grid item xs={12}>
+        <Grid item xs={12} md={8}>
           <Paper sx={{ padding: 3, margin: 3 }}>
             <Grid container>
-              <Grid item xs={12} sx={{ textAlign: "center", mb: 3, mt: 3 }}>
-                Cadastro de Raças
-              </Grid>
-
               <Condicional condicao={statusForm == StatusForm.PESQUISAR}>
-                <Grid item xs={12} sm={8} md={10}>
+                <Grid item xs={11}>
                   <InputFormat
                     label="Pesquisa"
-                    setDados={setPesquisa}
+                    setState={setPesquisa}
                     dados={pesquisa}
-                    campo="descricao"
+                    field="descricao"
                     erros={erros}
+                    iconeEnd="search"
+                    onClickIconeEnd={() => btPesquisar()}
+                    mapKeyPress={[{ key: "Enter", onKey: btPesquisar }]}
                   />
                 </Grid>
 
-                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                  <Button onClick={() => btPesquisar()}>Pesquisar</Button>
+                <Grid item xs={1}>
+                  <IconButton
+                    color="secondary"
+                    size="large"
+                    sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
+                    onClick={() => btNovaRaca()}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
                 </Grid>
 
-                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                  <Button onClick={() => btNovaRaca()}>Nova Raça</Button>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <ListCrud
+                <Grid item xs={12} sx={{ mt: 3 }}>
+                  <DataTable
                     cabecalho={cabecalhoListCrud}
-                    registros={rsPesquisa}
-                    campoId="idRaca"
-                    onEditar={onEditar}
-                    onExcluir={onExcluir}
+                    dados={rsPesquisa}
+                    acoes={[
+                      {
+                        icone: "edit",
+                        onAcionador: (rs: RacaInterface) =>
+                          onEditar(rs.idRaca as string),
+                        toolTip: "Editar",
+                      },
+                      {
+                        icone: "delete",
+                        onAcionador: (rs: RacaInterface) =>
+                          onExcluir(rs.idRaca as string),
+                        toolTip: "Excluir",
+                      },
+                    ]}
                   />
                 </Grid>
               </Condicional>
 
               <Condicional condicao={statusForm !== StatusForm.PESQUISAR}>
-                <Grid item xs={12} sm={8} md={10}>
+                <Grid item xs={12}>
                   <InputFormat
                     label="Nome"
-                    setDados={setRsDados}
+                    setState={setRsDados}
                     dados={rsDados}
-                    campo="nome"
+                    field="nome"
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
                 </Grid>
 
-                <Condicional
-                  condicao={[StatusForm.INCLUIR, StatusForm.ALTERAR].includes(
-                    statusForm
-                  )}
-                >
-                  <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                    <Button onClick={() => btConfirmarInclusao()}>
-                      {statusForm == StatusForm.INCLUIR ? "Incluir" : "Alterar"}
-                    </Button>
-                  </Grid>
-                </Condicional>
+                <Grid item xs={12} sx={{ mt: 3, textAlign: "right" }}>
+                  <IconButton
+                    color="secondary"
+                    size="large"
+                    sx={{ ml: 2 }}
+                    onClick={() => btCancelar()}
+                  >
+                    <CancelRoundedIcon />
+                  </IconButton>
 
-                <Condicional
-                  condicao={[StatusForm.EXCLUIR].includes(statusForm)}
-                >
-                  <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                    <Button onClick={() => btConfirmarExclusao()}>
-                      Excluir
-                    </Button>
-                  </Grid>
-                </Condicional>
+                  <Condicional
+                    condicao={[StatusForm.INCLUIR, StatusForm.ALTERAR].includes(
+                      statusForm
+                    )}
+                  >
+                    <IconButton
+                      color="secondary"
+                      size="large"
+                      sx={{ ml: 2 }}
+                      onClick={() => btConfirmarInclusao()}
+                    >
+                      <CheckCircleRoundedIcon />
+                    </IconButton>
+                  </Condicional>
 
-                <Grid item xs={6} sm={2} md={1} sx={{ textAlign: "right" }}>
-                  <Button onClick={() => btCancelar()}>Cancelar</Button>
+                  <Condicional
+                    condicao={[StatusForm.EXCLUIR].includes(statusForm)}
+                  >
+                    <IconButton
+                      color="secondary"
+                      size="large"
+                      sx={{ ml: 2 }}
+                      onClick={() => btConfirmarExclusao()}
+                    >
+                      <DeleteForeverRoundedIcon />
+                    </IconButton>
+                  </Condicional>
                 </Grid>
               </Condicional>
             </Grid>

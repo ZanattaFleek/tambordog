@@ -36,6 +36,16 @@ RGB
 import { createTheme } from "@mui/material"
 import { ptBR } from "@mui/material/locale"
 
+const enum CORES {
+  laranja = "#DC7B3F",
+  cinza = "#A0A0A0",
+  verdeAgua = "#0FB1AD",
+  verde = "#28a745",
+  azulEscuro = "#3c486b",
+  vermelho = "#e74c3c",
+  cinzaClaro = "#F4F4F5",
+}
+
 export const THEME = createTheme(
   {
     typography: {
@@ -69,7 +79,7 @@ export const THEME = createTheme(
       },
     },
     /*
-    */
+     */
 
     /*
   components: {
@@ -86,14 +96,14 @@ export const THEME = createTheme(
   },
   */
     cores: {
-      cinzaFundo: "#F4F4F5",
-      cinzaTexto: "#A0A0A0",
+      cinzaFundo: CORES.cinzaClaro,
+      cinzaTexto: CORES.cinza,
     },
     inputs: {
       marginTop: 2,
     },
     menu: {
-      corIcone: "#A569BD",
+      corIcone: CORES.azulEscuro,
     },
     mensagens: {
       /*
@@ -106,25 +116,26 @@ export const THEME = createTheme(
     corMensagem: '#A569BD',
     tamanhoIcone: 50
     */
-      corWarning: "#DC7B3F",
-      corError: "#e74c3c",
-      corInfo: "#0FB1AD",
-      corSuccess: "#28a745",
-      corFundo: "#A569BD",
-      corTitulo: "#0FB1AD",
-      corMensagem: "#DC7B3F",
+      corWarning: CORES.laranja, // Laranja
+      corError: CORES.vermelho, // Vermelho
+      corInfo: CORES.verdeAgua,
+      corSuccess: CORES.verde,
+      corFundo: CORES.azulEscuro,
+      corTitulo: CORES.verdeAgua,
+      corMensagem: CORES.laranja,
       tamanhoIcone: 50,
     },
     palette: {
       primary: {
-        main: "#DC7B3F",
+        main: CORES.azulEscuro,
+        // main: CORES.laranja, laranja
       },
       secondary: {
-        main: "#0FB1AD",
+        main: CORES.laranja,
       },
       action: {
-        disabledBackground: "#A569BD",
-        disabled: "#A569BD",
+        disabledBackground: CORES.azulEscuro,
+        disabled: CORES.azulEscuro,
       },
     },
   },

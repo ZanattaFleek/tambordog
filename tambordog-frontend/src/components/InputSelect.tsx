@@ -11,8 +11,8 @@ import Condicional from "./Condicional"
 
 interface PropsInputInterface {
   label: string
-  campo: string
-  setDados: React.Dispatch<React.SetStateAction<any>>
+  field: string
+  setState: React.Dispatch<React.SetStateAction<any>>
   dados: Record<string, string | number>
   erros: Record<string, string>
   opcoes: Array<Record<string | number, string | number>>
@@ -23,7 +23,7 @@ interface PropsInputInterface {
 /**
  * Formata o Texto de Acordo com a Máscara Fornecida
  * @param label - Label do Texto - O que é exibido para o usuário
- * @param setDados - setState do Conjunto de Dados
+ * @param setState - setState do Conjunto de Dados
  * @param dados - Dados Atuais a serem atualizados pelo setState
  * @param campo - Nome do campo a ser atualizado no setState
  * @param erros - Objeto de Erro que caso exista o campo, será exibido
@@ -31,9 +31,9 @@ interface PropsInputInterface {
  */
 export default function InputSelect({
   label,
-  setDados,
+  setState,
   dados,
-  campo,
+  field,
   erros,
   opcoes,
   nomeCampoChaveOpcoes,
@@ -43,18 +43,18 @@ export default function InputSelect({
     <>
       <FormControl sx={{ width: "100%" }}>
         <InputLabel
-          htmlFor={campo}
+          htmlFor={field}
           sx={{ backgroundColor: "white", paddingX: 1 }}
         >
           {label}
         </InputLabel>
 
         <Select
-          id={campo}
-          value={dados[campo]}
+          id={field}
+          value={dados[field]}
           label={label}
           onChange={(evento) =>
-            setDados({ ...dados, [campo]: evento.target.value })
+            setState({ ...dados, [field]: evento.target.value })
           }
         >
           {opcoes.map((v, indice) => (
@@ -64,8 +64,8 @@ export default function InputSelect({
           ))}
         </Select>
 
-        <Condicional condicao={typeof erros[campo] !== "undefined"}>
-          <FormHelperText sx={{ color: "red" }}>{erros[campo]}</FormHelperText>
+        <Condicional condicao={typeof erros[field] !== "undefined"}>
+          <FormHelperText sx={{ color: "red" }}>{erros[field]}</FormHelperText>
         </Condicional>
       </FormControl>
     </>

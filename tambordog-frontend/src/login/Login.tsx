@@ -62,13 +62,10 @@ export default function Login() {
   ) as ContextoGlobalInterface
 
   const btEntrar = () => {
-
     if (validarDados()) {
-
       setUsuarioState({ ...usuarioState, logado: true })
       navegar("/CadastroAtleta")
       // Ação para Fazer a Entrada no Sistema....
-      
     }
   }
 
@@ -91,19 +88,20 @@ export default function Login() {
                 <InputFormat
                   label="CPF"
                   mask="000.000.000-00"
-                  setDados={setDados}
+                  setState={setDados}
                   dados={dados}
-                  campo="cpf"
+                  field="cpf"
                   erros={erros}
                 />
               </Grid>
 
               <Grid item xs={12} sx={{ mt: 3 }}>
-                <InputPassword
-                  campo="senha"
+                <InputFormat
+                  field="senha"
+                  type="password"
                   label="Senha"
                   dados={dados}
-                  setDados={setDados}
+                  setState={setDados}
                   erros={erros}
                 />
               </Grid>
