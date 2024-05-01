@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography"
 import { Avatar, AvatarGroup, Button, Grid } from "@mui/material"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
-import { useNavigate } from "react-router-dom"
 
 interface propsCardEvento {
   titulo: string
@@ -23,16 +22,10 @@ export default function CardEvento({
   data,
   qtdInscritos,
 }: propsCardEvento) {
-  const nav = useNavigate()
-
-  const btClick = () => {
-    nav("/CadastroAtleta")
-  }
 
   return (
     <>
       <Card sx={{ display: "flex", marginTop: 1.5 }}>
-        <Button onClick={() => btClick()}>Navegar....</Button>
         <Grid container>
           <Grid item>
             <CardMedia

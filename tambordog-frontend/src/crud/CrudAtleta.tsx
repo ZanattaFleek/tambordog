@@ -22,7 +22,7 @@ import InputSelect from "../components/InputSelect"
 import InputPassword from "../components/InputPassword"
 import { useNavigate } from "react-router-dom"
 
-export default function CadastroAtleta() {
+export default function CrudAtleta() {
   const [erros, setErros] = useState({})
 
   const [dados, setDados] = useState({

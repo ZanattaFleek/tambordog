@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom"
-import CadastroAtleta from "../atleta/CadastroAtleta"
 import EventosEmAberto from "../eventos/EventosEmAberto"
 import App from "../App"
 import Login from "../login/Login"
+import CrudAtleta from "../crud/CrudAtleta"
+import CadastroUsuario from "../app/CadastroUsuario"
 
 export const RotasAPP = createBrowserRouter([
   {
@@ -14,12 +15,16 @@ export const RotasAPP = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/CadastroAtleta",
-        element: <CadastroAtleta />,
+        path: "/CrudAtleta",
+        element: <CrudAtleta />,
       },
       {
         path: "/EventosEmAberto",
         element: <EventosEmAberto />,
+      },
+      {
+        path: "/CadastroUsuario",
+        element: <CadastroUsuario />,
       },
     ],
   },

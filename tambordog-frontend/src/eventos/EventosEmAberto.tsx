@@ -1,10 +1,17 @@
 import React from "react"
 import CardEvento from "./CardEvento"
 import { Button, Chip, Stack } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 export default function EventosEmAberto() {
   const handleClick = (oque: string) => {
     console.info("Ordenar os Eventos por ", oque)
+  }
+
+  const nav = useNavigate()
+
+  const btClick = (url: string) => {
+    nav(url)
   }
 
   return (
@@ -38,6 +45,9 @@ export default function EventosEmAberto() {
         data={"05/11/2023"}
         qtdInscritos={4}
       />
+
+      <Button onClick={() => btClick("CadastroUsuario")}>Novo Usuário</Button>
+      <Button onClick={() => btClick("Login")}>Login</Button>
     </>
   )
 }
