@@ -12,6 +12,7 @@ import Condicional from "./components/Condicional"
 import MenuInferior from "./layout/MenuInferior"
 import { ROTAS_LIVRES } from "./layout/ClsMenu"
 import EventosEmAberto from "./eventos/EventosEmAberto"
+import TopBar from "./layout/TopBar"
 
 function App() {
   const chkRotaLivre = () => {
@@ -46,6 +47,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <ContextoGlobal.Provider value={ContextoGlobalDefault}>
           <Condicional condicao={usuarioState.logado}>
+            <TopBar />
             <Outlet />
             <MenuInferior />
           </Condicional>

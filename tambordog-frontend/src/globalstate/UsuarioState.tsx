@@ -7,7 +7,7 @@ export interface UsuarioStateInterface {
 
 export function useUsuarioState() {
   const [usuarioState, setUsuarioState] = useState<UsuarioStateInterface>({
-    logado: false,
+    logado: true,
     nome: "Fleek",
   })
 

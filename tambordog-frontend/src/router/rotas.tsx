@@ -4,6 +4,7 @@ import App from "../App"
 import Login from "../login/Login"
 import CrudAtleta from "../crud/CrudAtleta"
 import CadastroUsuario from "../app/CadastroUsuario"
+import CrudRaca from "../crud/CrudRaca"
 
 export const RotasAPP = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const RotasAPP = createBrowserRouter([
       {
         path: "/CrudAtleta",
         element: <CrudAtleta />,
+      },      
+      {
+        path: "/CrudRaca",
+        element: <CrudRaca />,
       },
       {
         path: "/EventosEmAberto",

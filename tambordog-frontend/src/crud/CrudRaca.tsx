@@ -10,7 +10,7 @@ import { StatusForm } from "../utils/ClsStatusForm"
 import Condicional from "../components/Condicional"
 import ClsValidacao from "../utils/ClsValidacao"
 
-export default function RacaCrud() {
+export default function CrudRaca() {
   const [erros, setErros] = useState({})
 
   const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
@@ -211,13 +211,6 @@ export default function RacaCrud() {
                   <Button onClick={() => btCancelar()}>Cancelar</Button>
                 </Grid>
               </Condicional>
-
-              {/*
-
-                <Grid item xs={12}>
-                  {JSON.stringify(rsRegistros)}
-                </Grid>
-                */}
             </Grid>
           </Paper>
         </Grid>
