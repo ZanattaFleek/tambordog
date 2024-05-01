@@ -1,80 +1,94 @@
-import React from "react"
+import React, { useContext } from "react"
+import { styled } from "@mui/material/styles"
 import AppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
 import Box from "@mui/material/Box"
-import Tooltip from "@mui/material/Tooltip"
+import Toolbar from "@mui/material/Toolbar"
 import IconButton from "@mui/material/IconButton"
-import Menu from "@mui/material/Menu"
-import MenuIcon from "@mui/icons-material/Menu"
-import styled from "@emotion/styled"
+import Typography from "@mui/material/Typography"
+import LogoutIcon from "@mui/icons-material/Logout"
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
+import { useNavigate } from "react-router-dom"
+import {
+  ContextoGlobal,
+  ContextoGlobalInterface,
+} from "../globalstate/ContextoGlobal"
 
-// const Offset = styled("div")(({ theme }) => theme.mixins.toolbar)
+const Offset = styled("div")(({ theme }) => theme.mixins.toolbar)
 
 export default function TopBar() {
+  const { layoutState, setLayoutState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
+  /*
+  const { mensagemState, setMensagemState } = useContext(
+    ContextoGlobal
+    
+  ) as ContextoGlobalInterface
+  */
+  const { usuarioState, setUsuarioState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+  const navegar = useNavigate()
+
+  /*
+  const fecharLoading = () => {
+    setMensagemState({ ...mensagemState, exibir: false })
+  }
+
+  const handleClick = (tipo: boolean) => {
+    if (tipo) {
+      navegar(layoutState.pathTituloAnterior)
+      let _titulo: string = layoutState.titulo
+      let _pathTitulo: string = layoutState.pathTitulo
+      setLayoutState({
+        titulo: layoutState.tituloAnterior,
+        pathTitulo: layoutState.pathTituloAnterior,
+        tituloAnterior: _titulo,
+        pathTituloAnterior: _pathTitulo,
+      })
+    } else {
+      setUsuarioState({ ...usuarioState, logado: false })
+      navegar("/")
+    }
+  }
+  */
   return (
     <>
-      <AppBar>
+      {/* onLoad={fecharLoading} */}
+
+      <AppBar color="default">
         <Toolbar>
           <IconButton
+            edge="start"
             color="inherit"
             aria-label="open drawer"
-            // onClick={toogleDrawer}
-            edge="start"
-            sx={{ mr: 2, flexGrow: 0 }}
+            sx={{ mr: 2 }}
+            size="small"
+            // onClick={() => handleClick(true)}
           >
-            <MenuIcon />
+            <ChevronLeftIcon />
           </IconButton>
-
-          <Box sx={{ flexGrow: 1 }}>
-            <img
-              src="imagens/logoFundoBranco.png"
-              width={150}
-              alt="Vamos Sorrir"
-            />
+          <Box sx={{ flexGrow: 1 }} />
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              {layoutState.titulo}
+            </Typography>
           </Box>
-
-          {/*
-              <Box sx={{ flexGrow: 0, mr: 1, textAlign: 'right' }} >
-                <Button variant='contained' disableElevation onClick={() => navigate( '/SetUnidade' )}>{layoutState.descricaoUnidadeAtual}</Button>
-              </Box>
-    
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Configurações">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <ManageAccountsIcon sx={{ border: '2px solid white', borderRadius: '50%', color: 'white' }} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean( anchorElUser )}
-                  onClose={handleCloseUserMenu}
-                >
-                  {opcoesMenu.map( ( menu: MenuOpcoesInterface, indice: number ) => (
-                    <MenuItem deslocamento={0} key={indice} menu={menu} />
-                  ) )}
-                </Menu>
-
-
-    
-              </Box>
-
-              */}
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ marginRight: -2 }}>
+            <IconButton
+              edge="end"
+              color="inherit"
+              size="small"
+              // onClick={() => handleClick(false)}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
-      {/*
       <Offset />
-            */}
     </>
   )
 }

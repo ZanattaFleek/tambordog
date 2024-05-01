@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { ThemeProvider } from "@mui/material"
-import { theme } from "./layout/Theme"
 import {
   ContextoGlobal,
   ContextoGlobalInterface,
@@ -13,6 +12,7 @@ import MenuInferior from "./layout/MenuInferior"
 import { ROTAS_LIVRES } from "./layout/ClsMenu"
 import EventosEmAberto from "./eventos/EventosEmAberto"
 import TopBar from "./layout/TopBar"
+import { THEME } from "./config/Theme"
 
 function App() {
   const chkRotaLivre = () => {
@@ -44,7 +44,7 @@ function App() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={THEME}>
         <ContextoGlobal.Provider value={ContextoGlobalDefault}>
           <Condicional condicao={usuarioState.logado}>
             <TopBar />
