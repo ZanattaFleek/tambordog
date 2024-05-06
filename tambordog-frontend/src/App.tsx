@@ -13,6 +13,7 @@ import { ROTAS_LIVRES } from "./layout/ClsMenu"
 import EventosEmAberto from "./eventos/EventosEmAberto"
 import TopBar from "./layout/TopBar"
 import { THEME } from "./config/Theme"
+import { styled } from "@mui/material/styles"
 
 function App() {
   const chkRotaLivre = () => {
@@ -40,7 +41,9 @@ function App() {
 
   useEffect(() => {
     chkRotaLivre()
-  }, [])
+  })
+
+  const Offset = styled("div")(({ theme }) => theme.mixins.toolbar)
 
   return (
     <>
@@ -48,12 +51,18 @@ function App() {
         <ContextoGlobal.Provider value={ContextoGlobalDefault}>
           <Condicional condicao={usuarioState.logado}>
             <TopBar />
-            <Outlet />
-            <MenuInferior />
           </Condicional>
 
-          <Condicional condicao={!usuarioState.logado && rotaLivre}>
+          <Condicional
+            condicao={
+              (!usuarioState.logado && rotaLivre) || usuarioState.logado
+            }
+          >
             <Outlet />
+          </Condicional>
+
+          <Condicional condicao={usuarioState.logado}>
+            <MenuInferior />
           </Condicional>
 
           <Condicional condicao={!usuarioState.logado && !rotaLivre}>

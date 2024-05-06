@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 
 import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
 
-import { Grid, IconButton, Paper } from "@mui/material"
+import { Grid, IconButton, Paper, Tooltip } from "@mui/material"
 import InputFormat from "../components/InputFormat"
 import ClsCrud from "../utils/ClsCrud"
 import { StatusForm } from "../utils/ClsStatusForm"
@@ -172,14 +172,15 @@ export default function CrudRaca() {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <IconButton
-                    color="secondary"
-                    size="large"
-                    sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
-                    onClick={() => btNovaRaca()}
-                  >
-                    <AddCircleIcon />
-                  </IconButton>
+                  <Tooltip title="Nova Raça">
+                    <IconButton
+                      color="secondary"
+                      sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
+                      onClick={() => btNovaRaca()}
+                    >
+                      <AddCircleIcon sx={{ fontSize: 35 }} />
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
@@ -217,41 +218,53 @@ export default function CrudRaca() {
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3, textAlign: "right" }}>
-                  <IconButton
-                    color="secondary"
-                    size="large"
-                    sx={{ ml: 2 }}
-                    onClick={() => btCancelar()}
-                  >
-                    <CancelRoundedIcon />
-                  </IconButton>
+                  <Tooltip title="Cancelar">
+                    <IconButton
+                      color="secondary"
+                      size="large"
+                      sx={{ ml: 2 }}
+                      onClick={() => btCancelar()}
+                    >
+                      <CancelRoundedIcon sx={{ fontSize: 35 }} />
+                    </IconButton>
+                  </Tooltip>
 
                   <Condicional
                     condicao={[StatusForm.INCLUIR, StatusForm.ALTERAR].includes(
                       statusForm
                     )}
                   >
-                    <IconButton
-                      color="secondary"
-                      size="large"
-                      sx={{ ml: 2 }}
-                      onClick={() => btConfirmarInclusao()}
+                    <Tooltip
+                      title={"Confirmar ".concat(
+                        statusForm === StatusForm.INCLUIR
+                          ? "inclusão"
+                          : "alteração"
+                      )}
                     >
-                      <CheckCircleRoundedIcon />
-                    </IconButton>
+                      <IconButton
+                        color="secondary"
+                        size="large"
+                        sx={{ ml: 2 }}
+                        onClick={() => btConfirmarInclusao()}
+                      >
+                        <CheckCircleRoundedIcon sx={{ fontSize: 35 }} />
+                      </IconButton>
+                    </Tooltip>
                   </Condicional>
 
                   <Condicional
                     condicao={[StatusForm.EXCLUIR].includes(statusForm)}
                   >
-                    <IconButton
-                      color="secondary"
-                      size="large"
-                      sx={{ ml: 2 }}
-                      onClick={() => btConfirmarExclusao()}
-                    >
-                      <DeleteForeverRoundedIcon />
-                    </IconButton>
+                    <Tooltip title="Confirmar exclusão">
+                      <IconButton
+                        color="secondary"
+                        size="large"
+                        sx={{ ml: 2 }}
+                        onClick={() => btConfirmarExclusao()}
+                      >
+                        <DeleteForeverRoundedIcon sx={{ fontSize: 35 }} />
+                      </IconButton>
+                    </Tooltip>
                   </Condicional>
                 </Grid>
               </Condicional>

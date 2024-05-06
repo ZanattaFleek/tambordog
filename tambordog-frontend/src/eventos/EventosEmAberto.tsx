@@ -1,7 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import CardEvento from "./CardEvento"
 import { Button, Chip, Stack } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import {
+  ContextoGlobal,
+  ContextoGlobalInterface,
+} from "../globalstate/ContextoGlobal"
 
 export default function EventosEmAberto() {
   const handleClick = (oque: string) => {
@@ -10,8 +14,14 @@ export default function EventosEmAberto() {
 
   const nav = useNavigate()
 
+  const { layoutState, setLayoutState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
   const btClick = (url: string) => {
     nav(url)
+    console.log(url)
+    setLayoutState({ ...layoutState, titulo: "" })
   }
 
   return (
