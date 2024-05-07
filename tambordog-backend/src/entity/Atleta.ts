@@ -1,9 +1,10 @@
 import { Column, Entity, Generated, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Cao from './Cao';
 import Inscricao from './Inscricao';
+import { AtletaInterface } from '../interfaces/atleta.interfaces';
 
 @Entity({ name: 'atletas' })
-export default class Atleta {
+export default class Atleta implements AtletaInterface {
   @PrimaryGeneratedColumn('uuid')
   @Generated('uuid')
   idAtleta: string;
@@ -38,8 +39,8 @@ export default class Atleta {
   @Column({ nullable: true })
   ativo: boolean
 
-  @Column({ nullable: true })
-  avatar: string
+  //  @Column({ nullable: true })
+  // avatar: string
 
   @OneToMany(() => Cao, (cao) => cao.atleta)
   caes: Cao[]

@@ -57,13 +57,12 @@ export default function TopBar() {
     <>
       {/* onLoad={fecharLoading} */}
 
-      <AppBar color="default">
+      <AppBar color="primary">
         <Toolbar>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
             size="small"
             // onClick={() => handleClick(true)}
           >
@@ -81,6 +80,7 @@ export default function TopBar() {
               edge="end"
               color="inherit"
               size="small"
+              sx={{ mr: 1 }}
               // onClick={() => handleClick(false)}
             >
               <LogoutIcon />

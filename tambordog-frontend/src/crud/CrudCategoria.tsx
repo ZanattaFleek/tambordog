@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 
-import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
+import { CategoriaInterface } from "../../../tambordog-backend/src/interfaces/categoria.interfaces"
 
 import { Grid, IconButton, Paper, Tooltip } from "@mui/material"
 import InputFormat from "../components/InputFormat"
@@ -20,7 +20,7 @@ import {
 } from "../globalstate/ContextoGlobal"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 
-export default function CrudRaca() {
+export default function CrudCategoria() {
   const [erros, setErros] = useState({})
 
   const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
@@ -31,13 +31,14 @@ export default function CrudRaca() {
     descricao: "",
   })
 
-  const [rsPesquisa, setRsPesquisa] = useState<Array<RacaInterface>>([])
-
-  const resetDados: RacaInterface = {
+  const resetDados: CategoriaInterface = {
     nome: "",
+    observacao: "",
   }
 
-  const [rsDados, setRsDados] = useState<RacaInterface>(resetDados)
+  const [rsPesquisa, setRsPesquisa] = useState<Array<CategoriaInterface>>([])
+
+  const [rsDados, setRsDados] = useState<CategoriaInterface>(resetDados)
 
   const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
@@ -45,20 +46,25 @@ export default function CrudRaca() {
       alinhamento: "left",
       campo: "nome",
     },
+    {
+      cabecalho: "Observação",
+      alinhamento: "left",
+      campo: "observacao",
+    },
   ]
 
   const btPesquisar = () => {
     clsCrud
       .consultar({
-        entidade: "Raca",
+        entidade: "Categoria",
         criterio: {
           nome: "%".concat(pesquisa.descricao).concat("%"),
         },
         camposLike: ["nome"],
-        select: ["idRaca", "nome"],
+        select: ["idCategoria", "nome", "observacao"],
       })
-      .then((rsRacas: Array<RacaInterface>) => {
-        setRsPesquisa(rsRacas)
+      .then((rsCategorias: Array<CategoriaInterface>) => {
+        setRsPesquisa(rsCategorias)
       })
   }
 
@@ -83,7 +89,15 @@ export default function CrudRaca() {
       rsDados,
       tmpErros,
       retorno,
-      "Nome da raça não pode ser vazio"
+      "Nome da categoria não pode ser vazio"
+    )
+
+    retorno = clsValidacao.naoVazio(
+      "observacao",
+      rsDados,
+      tmpErros,
+      retorno,
+      "Observação não pode ser vazio"
     )
 
     setErros(tmpErros)
@@ -95,7 +109,7 @@ export default function CrudRaca() {
     if (validarDados()) {
       clsCrud
         .incluir({
-          entidade: "Raca",
+          entidade: "Categoria",
           criterio: rsDados,
         })
         .then((rs) => {
@@ -110,7 +124,7 @@ export default function CrudRaca() {
   const btConfirmarExclusao = () => {
     clsCrud
       .excluir({
-        entidade: "Raca",
+        entidade: "Categoria",
         criterio: rsDados,
       })
       .then((rs) => {
@@ -121,29 +135,29 @@ export default function CrudRaca() {
       })
   }
 
-  const pesquisaPorId = (id: string | number): Promise<RacaInterface> => {
+  const pesquisaPorId = (id: string | number): Promise<CategoriaInterface> => {
     return clsCrud
       .consultar({
-        entidade: "Raca",
+        entidade: "Categoria",
         criterio: {
-          idRaca: id,
+          idCategoria: id,
         },
       })
-      .then((rsRaca: Array<RacaInterface>) => {
-        return rsRaca[0]
+      .then((rs: Array<CategoriaInterface>) => {
+        return rs[0]
       })
   }
 
   const onEditar = (id: string | number) => {
-    pesquisaPorId(id).then((rsRaca) => {
-      setRsDados(rsRaca)
+    pesquisaPorId(id).then((rs) => {
+      setRsDados(rs)
       setStatusForm(StatusForm.ALTERAR)
     })
   }
 
   const onExcluir = (id: string | number) => {
-    pesquisaPorId(id).then((rsRaca) => {
-      setRsDados(rsRaca)
+    pesquisaPorId(id).then((rs) => {
+      setRsDados(rs)
       setStatusForm(StatusForm.EXCLUIR)
     })
   }
@@ -153,7 +167,7 @@ export default function CrudRaca() {
   ) as ContextoGlobalInterface
 
   useEffect(() => {
-    setLayoutState({ ...layoutState, titulo: "Cadastro de Raças" })
+    setLayoutState({ ...layoutState, titulo: "Cadastro de Categorias" })
   }, [])
 
   return (
@@ -177,7 +191,7 @@ export default function CrudRaca() {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <Tooltip title="Nova Raça">
+                  <Tooltip title="Nova Categoria">
                     <IconButton
                       color="secondary"
                       sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
@@ -195,14 +209,14 @@ export default function CrudRaca() {
                     acoes={[
                       {
                         icone: "edit",
-                        onAcionador: (rs: RacaInterface) =>
-                          onEditar(rs.idRaca as string),
+                        onAcionador: (rs: CategoriaInterface) =>
+                          onEditar(rs.idCategoria as string),
                         toolTip: "Editar",
                       },
                       {
                         icone: "delete",
-                        onAcionador: (rs: RacaInterface) =>
-                          onExcluir(rs.idRaca as string),
+                        onAcionador: (rs: CategoriaInterface) =>
+                          onExcluir(rs.idCategoria as string),
                         toolTip: "Excluir",
                       },
                     ]}
@@ -217,6 +231,17 @@ export default function CrudRaca() {
                     setState={setRsDados}
                     dados={rsDados}
                     field="nome"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Observação"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="observacao"
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />

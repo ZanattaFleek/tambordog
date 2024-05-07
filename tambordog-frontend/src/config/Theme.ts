@@ -55,9 +55,9 @@ export const THEME = createTheme(
       MuiToolbar: {
         styleOverrides: {
           regular: {
-            height: "12px",
+            height: "40px",
             // width: "20px",
-            minHeight: "32px",
+            minHeight: "20px",
             "@media (min-width: 600px)": {
               minHeight: "48px",
             },

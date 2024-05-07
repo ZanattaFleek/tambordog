@@ -128,7 +128,7 @@ export default function DataTable<T>({
               ))}
 
               <Condicional condicao={acoes.length > 0}>
-                <StyledTableCell>Opções</StyledTableCell>
+                <StyledTableCell align="right">Opções</StyledTableCell>
               </Condicional>
             </StyledTableRow>
           </TableHead>
@@ -161,36 +161,34 @@ export default function DataTable<T>({
                     })}
 
                     <Condicional condicao={acoes.length > 0}>
-                      <StyledTableCell>
-                        <Stack direction="row" spacing={1}>
-                          {acoes.map((acao, index) => (
-                            <Tooltip title={acao.toolTip} key={index}>
-                              <span>
-                                <IconButton
-                                  disabled={
-                                    acao.onDisabled
-                                      ? acao.onDisabled(row as T)
-                                      : false
-                                  }
-                                  onClick={() =>
-                                    acao.onAcionador(row as T, indice)
-                                  }
-                                  sx={{ mx: 0, px: 0 }}
+                      <StyledTableCell align="right">
+                        {acoes.map((acao, index) => (
+                          <Tooltip title={acao.toolTip} key={index}>
+                            <span>
+                              <IconButton
+                                disabled={
+                                  acao.onDisabled
+                                    ? acao.onDisabled(row as T)
+                                    : false
+                                }
+                                onClick={() =>
+                                  acao.onAcionador(row as T, indice)
+                                }
+                                sx={{ mx: 0, px: 0 }}
+                              >
+                                <Icon
+                                  sx={{
+                                    color: acao.corIcone
+                                      ? acao.corIcone
+                                      : theme.palette.secondary.main,
+                                  }}
                                 >
-                                  <Icon
-                                    sx={{
-                                      color: acao.corIcone
-                                        ? acao.corIcone
-                                        : theme.palette.secondary.main
-                                    }}
-                                  >
-                                    {acao.icone}
-                                  </Icon>
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          ))}
-                        </Stack>
+                                  {acao.icone}
+                                </Icon>
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+                        ))}
                       </StyledTableCell>
                     </Condicional>
                   </StyledTableRow>
