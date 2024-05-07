@@ -33,7 +33,13 @@ export default function CrudAtleta() {
 
   const resetDados: AtletaInterface = {
     nome: "",
-    observacao: "",
+    cpf: "",
+    dataNascimento: "",
+    telefone: "",
+    whatsapp: "",
+    email: "",
+    senha: "",
+    ativo: false,
   }
 
   const [rsPesquisa, setRsPesquisa] = useState<Array<AtletaInterface>>([])
@@ -47,24 +53,40 @@ export default function CrudAtleta() {
       campo: "nome",
     },
     {
-      cabecalho: "Observação",
+      cabecalho: "CPF",
       alinhamento: "left",
-      campo: "observacao",
+      campo: "cpf",
+    },
+    {
+      cabecalho: "Fone",
+      alinhamento: "left",
+      campo: "telefone",
+    },
+    {
+      cabecalho: "WhatsAPP",
+      alinhamento: "left",
+      campo: "whatsapp",
+    },
+    {
+      cabecalho: "Ativo",
+      alinhamento: "left",
+      campo: "ativo",
+      format: (v: boolean) => (v ? "Sim" : "Não"),
     },
   ]
 
   const btPesquisar = () => {
     clsCrud
       .consultar({
-        entidade: "Categoria",
+        entidade: "Atleta",
         criterio: {
           nome: "%".concat(pesquisa.descricao).concat("%"),
         },
         camposLike: ["nome"],
-        select: ["idCategoria", "nome", "observacao"],
+        select: ["idAtleta", "nome", "cpf", "telefone", "whatsapp", "ativo"],
       })
-      .then((rsCategorias: Array<AtletaInterface>) => {
-        setRsPesquisa(rsCategorias)
+      .then((rs: Array<AtletaInterface>) => {
+        setRsPesquisa(rs)
       })
   }
 
@@ -89,15 +111,38 @@ export default function CrudAtleta() {
       rsDados,
       tmpErros,
       retorno,
-      "Nome da categoria não pode ser vazio"
+      "Nome não pode ser vazio"
     )
 
-    retorno = clsValidacao.naoVazio(
-      "observacao",
+    retorno = clsValidacao.eCPF("cpf", rsDados, tmpErros, retorno, false)
+    retorno = clsValidacao.eData(
+      "dataNascimento",
       rsDados,
       tmpErros,
       retorno,
-      "Observação não pode ser vazio"
+      false
+    )
+    retorno = clsValidacao.eTelefone(
+      "telefone",
+      rsDados,
+      tmpErros,
+      retorno,
+      false
+    )
+    retorno = clsValidacao.eTelefone(
+      "whatsapp",
+      rsDados,
+      tmpErros,
+      retorno,
+      false
+    )
+    retorno = clsValidacao.eEmail("email", rsDados, tmpErros, retorno, false)
+    retorno = clsValidacao.naoVazio(
+      "senha",
+      rsDados,
+      tmpErros,
+      retorno,
+      "Campo senha deve ser preenchido"
     )
 
     setErros(tmpErros)
@@ -109,7 +154,7 @@ export default function CrudAtleta() {
     if (validarDados()) {
       clsCrud
         .incluir({
-          entidade: "Categoria",
+          entidade: "Atleta",
           criterio: rsDados,
         })
         .then((rs) => {
@@ -124,7 +169,7 @@ export default function CrudAtleta() {
   const btConfirmarExclusao = () => {
     clsCrud
       .excluir({
-        entidade: "Categoria",
+        entidade: "Atleta",
         criterio: rsDados,
       })
       .then((rs) => {
@@ -138,9 +183,9 @@ export default function CrudAtleta() {
   const pesquisaPorId = (id: string | number): Promise<AtletaInterface> => {
     return clsCrud
       .consultar({
-        entidade: "Categoria",
+        entidade: "Atleta",
         criterio: {
-          idCategoria: id,
+          idAtleta: id,
         },
       })
       .then((rs: Array<AtletaInterface>) => {
@@ -167,7 +212,7 @@ export default function CrudAtleta() {
   ) as ContextoGlobalInterface
 
   useEffect(() => {
-    setLayoutState({ ...layoutState, titulo: "Cadastro de Categorias" })
+    setLayoutState({ ...layoutState, titulo: "Cadastro de Atletas" })
   }, [])
 
   return (
@@ -191,7 +236,7 @@ export default function CrudAtleta() {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <Tooltip title="Nova Categoria">
+                  <Tooltip title="Novo Atleta">
                     <IconButton
                       color="secondary"
                       sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
@@ -210,13 +255,13 @@ export default function CrudAtleta() {
                       {
                         icone: "edit",
                         onAcionador: (rs: AtletaInterface) =>
-                          onEditar(rs.idCategoria as string),
+                          onEditar(rs.idAtleta as string),
                         toolTip: "Editar",
                       },
                       {
                         icone: "delete",
                         onAcionador: (rs: AtletaInterface) =>
-                          onExcluir(rs.idCategoria as string),
+                          onExcluir(rs.idAtleta as string),
                         toolTip: "Excluir",
                       },
                     ]}
@@ -231,6 +276,7 @@ export default function CrudAtleta() {
                     setState={setRsDados}
                     dados={rsDados}
                     field="nome"
+                    maxLength={50}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
@@ -238,10 +284,87 @@ export default function CrudAtleta() {
 
                 <Grid item xs={12}>
                   <InputFormat
-                    label="Observação"
+                    label="CPF"
+                    mask="cpf"
                     setState={setRsDados}
                     dados={rsDados}
-                    field="observacao"
+                    field="cpf"
+                    type="tel"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Nascimento"
+                    tipo="date"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="dataNascimento"
+                    type="tel"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Telefone"
+                    mask="tel"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="telefone"
+                    type="tel"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Whats APP"
+                    mask="tel"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="whatsapp"
+                    type="tel"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="e-mail"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="email"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Senha"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="senha"
+                    maxLength={25}
+                    type="password"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Ativo"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="ativo"
+                    tipo="checkbox"
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />

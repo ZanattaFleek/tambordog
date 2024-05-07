@@ -9,7 +9,7 @@ export default class Atleta implements AtletaInterface {
   @Generated('uuid')
   idAtleta: string;
 
-  @Column({ length: 60 })
+  @Column({ length: 50 })
   nome: string
 
   @Column({ length: 14 })

@@ -231,6 +231,7 @@ export default function CrudCategoria() {
                     setState={setRsDados}
                     dados={rsDados}
                     field="nome"
+                    maxLength={35}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
@@ -242,6 +243,7 @@ export default function CrudCategoria() {
                     setState={setRsDados}
                     dados={rsDados}
                     field="observacao"
+                    maxLength={255}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />

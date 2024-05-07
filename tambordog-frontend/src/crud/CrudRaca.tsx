@@ -217,6 +217,7 @@ export default function CrudRaca() {
                     setState={setRsDados}
                     dados={rsDados}
                     field="nome"
+                    maxLength={35}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
