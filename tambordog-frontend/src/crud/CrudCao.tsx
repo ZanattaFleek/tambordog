@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 
-import { AtletaInterface } from "../../../tambordog-backend/src/interfaces/atleta.interfaces"
-
 import { Grid, IconButton, Paper, Tooltip } from "@mui/material"
 import InputFormat from "../components/InputFormat"
 import ClsCrud from "../utils/ClsCrud"
+import { StatusForm } from "../utils/ClsStatusForm"
 import Condicional from "../components/Condicional"
 import ClsValidacao from "../utils/ClsValidacao"
 
@@ -18,17 +17,15 @@ import {
   ContextoGlobalInterface,
 } from "../globalstate/ContextoGlobal"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
-import CrudCao from "./CrudCao"
+import { AtletaInterface } from "../../../tambordog-backend/src/interfaces/atleta.interfaces"
+import ShowText from "../components/ShowText"
+import { CaoInterface } from "../../../tambordog-backend/src/interfaces/cao.interfaces"
 
-enum StatusForm {
-  INCLUIR = "INCLUIR",
-  ALTERAR = "ALTERAR",
-  PESQUISAR = "PESQUISAR",
-  EXCLUIR = "EXCLUIR",
-  CAES = "CAES",
+interface PropsInterface {
+  rsAtleta: AtletaInterface
 }
 
-export default function CrudAtleta() {
+export default function CrudCao({ rsAtleta }: PropsInterface) {
   const [erros, setErros] = useState({})
 
   const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
@@ -39,20 +36,20 @@ export default function CrudAtleta() {
     descricao: "",
   })
 
-  const resetDados: AtletaInterface = {
+  const [rsPesquisa, setRsPesquisa] = useState<Array<CaoInterface>>([])
+
+  const resetDados: CaoInterface = {
     nome: "",
-    cpf: "",
     dataNascimento: "",
-    telefone: "",
-    whatsapp: "",
-    email: "",
-    senha: "",
-    ativo: false,
+    ativo: true,
+    avatar: "",
+    idAtleta: "",
+    idCao: "",
+    idCategoria: "",
+    idRaca: "",
   }
 
-  const [rsPesquisa, setRsPesquisa] = useState<Array<AtletaInterface>>([])
-
-  const [rsDados, setRsDados] = useState<AtletaInterface>(resetDados)
+  const [rsDados, setRsDados] = useState<CaoInterface>(resetDados)
 
   const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
@@ -61,39 +58,26 @@ export default function CrudAtleta() {
       campo: "nome",
     },
     {
-      cabecalho: "CPF",
-      alinhamento: "left",
-      campo: "cpf",
-    },
-    {
-      cabecalho: "Fone",
-      alinhamento: "left",
-      campo: "telefone",
-    },
-    {
-      cabecalho: "WhatsAPP",
-      alinhamento: "left",
-      campo: "whatsapp",
+      cabecalho: "Data Nascimento",
+      campo: "dataNascimento",
     },
     {
       cabecalho: "Ativo",
-      alinhamento: "left",
       campo: "ativo",
-      format: (v: boolean) => (v ? "Sim" : "Não"),
+      format: (rs: boolean) => (rs ? "Sim" : "Não"),
     },
   ]
 
   const btPesquisar = () => {
     clsCrud
       .consultar({
-        entidade: "Atleta",
+        entidade: "Cao",
         criterio: {
-          nome: "%".concat(pesquisa.descricao).concat("%"),
+          idAtleta: rsAtleta.idAtleta,
         },
-        camposLike: ["nome"],
-        select: ["idAtleta", "nome", "cpf", "telefone", "whatsapp", "ativo"],
+        select: ["idCao", "nome", "dataNascimento"],
       })
-      .then((rs: Array<AtletaInterface>) => {
+      .then((rs: Array<CaoInterface>) => {
         setRsPesquisa(rs)
       })
   }
@@ -119,39 +103,10 @@ export default function CrudAtleta() {
       rsDados,
       tmpErros,
       retorno,
-      "Nome não pode ser vazio"
+      "Nome do cão não pode ser vazio"
     )
 
-    retorno = clsValidacao.eCPF("cpf", rsDados, tmpErros, retorno, false)
-    retorno = clsValidacao.eData(
-      "dataNascimento",
-      rsDados,
-      tmpErros,
-      retorno,
-      false
-    )
-    retorno = clsValidacao.eTelefone(
-      "telefone",
-      rsDados,
-      tmpErros,
-      retorno,
-      false
-    )
-    retorno = clsValidacao.eTelefone(
-      "whatsapp",
-      rsDados,
-      tmpErros,
-      retorno,
-      false
-    )
-    retorno = clsValidacao.eEmail("email", rsDados, tmpErros, retorno, false)
-    retorno = clsValidacao.naoVazio(
-      "senha",
-      rsDados,
-      tmpErros,
-      retorno,
-      "Campo senha deve ser preenchido"
-    )
+    // TODO - Validar Dados....
 
     setErros(tmpErros)
 
@@ -162,13 +117,24 @@ export default function CrudAtleta() {
     if (validarDados()) {
       clsCrud
         .incluir({
-          entidade: "Atleta",
+          entidade: "Cao",
           criterio: rsDados,
+          mensagem: "Incluindo Cão...",
+          setMensagemState: setMensagemState,
         })
         .then((rs) => {
+            
           if (rs.ok) {
             btPesquisar()
             setStatusForm(StatusForm.PESQUISAR)
+          } else {
+            setMensagemState({
+              botaoFechar: true,
+              mensagem: "Erro no Cadastro - Consulte Suporte",
+              titulo: "Erro no Cadastro",
+              tipo: "erro",
+              exibir: true,
+            })
           }
         })
     }
@@ -177,7 +143,7 @@ export default function CrudAtleta() {
   const btConfirmarExclusao = () => {
     clsCrud
       .excluir({
-        entidade: "Atleta",
+        entidade: "Cao",
         criterio: rsDados,
       })
       .then((rs) => {
@@ -188,15 +154,15 @@ export default function CrudAtleta() {
       })
   }
 
-  const pesquisaPorId = (id: string | number): Promise<AtletaInterface> => {
+  const pesquisaPorId = (id: string | number): Promise<CaoInterface> => {
     return clsCrud
       .consultar({
-        entidade: "Atleta",
+        entidade: "Cao",
         criterio: {
-          idAtleta: id,
+          idCao: id,
         },
       })
-      .then((rs: Array<AtletaInterface>) => {
+      .then((rs: Array<CaoInterface>) => {
         return rs[0]
       })
   }
@@ -215,24 +181,34 @@ export default function CrudAtleta() {
     })
   }
 
-  const onCaes = (id: string | number) => {
-    pesquisaPorId(id).then((rs) => {
-      setRsDados(rs)
-      setStatusForm(StatusForm.CAES)
-    })
-  }
-
   const { layoutState, setLayoutState } = useContext(
     ContextoGlobal
   ) as ContextoGlobalInterface
 
+  const { mensagemState, setMensagemState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
   useEffect(() => {
-    setLayoutState({ ...layoutState, titulo: "Cadastro de Atletas" })
+    setLayoutState({ ...layoutState, titulo: "Cadastro de Cães" })
+    btPesquisar()
   }, [])
 
   return (
     <>
       <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <ShowText titulo="Atleta" descricao={rsAtleta.nome} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <ShowText
+            titulo="WhatsAPP"
+            tipo="whatsapp"
+            descricao={rsAtleta.whatsapp}
+          />
+        </Grid>
+
         <Grid item xs={12} md={8}>
           <Paper sx={{ padding: { xs: 1, md: 3 }, margin: { xs: 1, md: 3 } }}>
             <Grid container>
@@ -251,7 +227,7 @@ export default function CrudAtleta() {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <Tooltip title="Novo Atleta">
+                  <Tooltip title="Novo Cão">
                     <IconButton
                       color="secondary"
                       sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
@@ -269,129 +245,29 @@ export default function CrudAtleta() {
                     acoes={[
                       {
                         icone: "edit",
-                        onAcionador: (rs: AtletaInterface) =>
-                          onEditar(rs.idAtleta as string),
+                        onAcionador: (rs: CaoInterface) =>
+                          onEditar(rs.idCao as string),
                         toolTip: "Editar",
                       },
                       {
                         icone: "delete",
-                        onAcionador: (rs: AtletaInterface) =>
-                          onExcluir(rs.idAtleta as string),
+                        onAcionador: (rs: CaoInterface) =>
+                          onExcluir(rs.idCao as string),
                         toolTip: "Excluir",
-                      },
-                      {
-                        icone: "pets",
-                        onAcionador: (rs: AtletaInterface) =>
-                          onCaes(rs.idAtleta as string),
-                        toolTip: "Cães",
                       },
                     ]}
                   />
                 </Grid>
               </Condicional>
 
-              <Condicional
-                condicao={[
-                  StatusForm.ALTERAR,
-                  StatusForm.INCLUIR,
-                  StatusForm.EXCLUIR,
-                ].includes(statusForm)}
-              >
+              <Condicional condicao={statusForm !== StatusForm.PESQUISAR}>
                 <Grid item xs={12}>
                   <InputFormat
                     label="Nome"
                     setState={setRsDados}
                     dados={rsDados}
                     field="nome"
-                    maxLength={50}
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="CPF"
-                    mask="cpf"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="cpf"
-                    type="tel"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="Nascimento"
-                    tipo="date"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="dataNascimento"
-                    type="tel"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="Telefone"
-                    mask="tel"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="telefone"
-                    type="tel"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="Whats APP"
-                    mask="tel"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="whatsapp"
-                    type="tel"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="e-mail"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="email"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="Senha"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="senha"
-                    maxLength={25}
-                    type="password"
-                    erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <InputFormat
-                    label="Ativo"
-                    setState={setRsDados}
-                    dados={rsDados}
-                    field="ativo"
-                    tipo="checkbox"
+                    maxLength={35}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
@@ -448,16 +324,12 @@ export default function CrudAtleta() {
                   </Condicional>
                 </Grid>
               </Condicional>
-
-              <Condicional condicao={statusForm === StatusForm.CAES}>
-                <Grid item xs={12}>
-                  <CrudCao rsAtleta={rsDados} />
-                </Grid>
-              </Condicional>
             </Grid>
           </Paper>
         </Grid>
       </Grid>
+      {JSON.stringify(rsDados)}
+      {JSON.stringify(erros)}
     </>
   )
 }

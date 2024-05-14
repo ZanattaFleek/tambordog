@@ -1,8 +1,22 @@
+import { useContext } from "react"
 import {
   PadraoCrudInterface,
   RespostaPadraoInterface,
 } from "../../../tambordog-backend/src/interfaces/padrao.interfaces"
 import axios, { AxiosRequestConfig } from "axios"
+import {
+  ContextoGlobal,
+  ContextoGlobalInterface,
+} from "../globalstate/ContextoGlobal"
+import { MensagemStateInterface } from "../globalstate/MensagemState"
+
+export interface PropsInterface extends PadraoCrudInterface {
+  mensagem?: string
+  mensagemErro?: string
+  setMensagemState?: React.Dispatch<
+    React.SetStateAction<MensagemStateInterface>
+  >
+}
 
 export default class ClsCrud {
   public consultar({
@@ -39,7 +53,10 @@ export default class ClsCrud {
   public incluir({
     entidade,
     criterio,
-  }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
+    setMensagemState,
+    mensagem = "",
+    mensagemErro = "",
+  }: PropsInterface): Promise<RespostaPadraoInterface<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
       criterio: criterio,
@@ -50,6 +67,16 @@ export default class ClsCrud {
       headers: {
         "Content-Type": "application/json",
       },
+    }
+
+    if (mensagem.length > 0 && setMensagemState) {
+      setMensagemState({
+        botaoFechar: false,
+        exibir: true,
+        mensagem: mensagem,
+        tipo: "aviso",
+        titulo: "Incluindo...",
+      })
     }
 
     return axios

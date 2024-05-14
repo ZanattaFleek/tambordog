@@ -36,7 +36,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "teste": "nodemon --exec ts-node src/testes/teste.ts"
   },
   "eslintConfig": {
     "extends": [

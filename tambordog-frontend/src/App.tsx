@@ -14,6 +14,8 @@ import EventosEmAberto from "./eventos/EventosEmAberto"
 import TopBar from "./layout/TopBar"
 import { THEME } from "./config/Theme"
 import { styled } from "@mui/material/styles"
+import { useMensagemState } from "./globalstate/MensagemState"
+import Mensagem from "./components/Mensagem"
 
 function App() {
   const chkRotaLivre = () => {
@@ -28,6 +30,8 @@ function App() {
 
   const { usuarioState, setUsuarioState } = useUsuarioState()
 
+  const { mensagemState, setMensagemState } = useMensagemState()
+
   const { layoutState, setLayoutState } = useLayoutState()
 
   const [rotaLivre, setRotaLivre] = useState<boolean>(false)
@@ -37,6 +41,8 @@ function App() {
     usuarioState: usuarioState,
     layoutState: layoutState,
     setLayoutState: setLayoutState,
+    mensagemState: mensagemState,
+    setMensagemState: setMensagemState,
   }
 
   useEffect(() => {
@@ -49,6 +55,8 @@ function App() {
     <>
       <ThemeProvider theme={THEME}>
         <ContextoGlobal.Provider value={ContextoGlobalDefault}>
+          <Mensagem />
+
           <Condicional condicao={usuarioState.logado}>
             <TopBar />
           </Condicional>

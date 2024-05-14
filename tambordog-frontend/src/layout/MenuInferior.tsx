@@ -23,6 +23,7 @@ export default function MenuInferior() {
       <BottomNavigation
         value={value}
         onChange={(_event, newValue) => {
+          console.log("New Value", newValue)
           setValue(newValue)
         }}
       >

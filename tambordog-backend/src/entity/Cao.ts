@@ -1,48 +1,57 @@
-import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import Atleta from './Atleta';
-import Raca from './Raca';
-import Categoria from './Categoria';
-import Inscricao from './Inscricao';
+import {
+  Column,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import Atleta from "./Atleta";
+import Raca from "./Raca";
+import Categoria from "./Categoria";
+import Inscricao from "./Inscricao";
+import { CaoInterface } from "../interfaces/cao.interfaces";
 
-@Entity({ name: 'caes' })
-export default class Cao {
-  @PrimaryGeneratedColumn('uuid')
-  @Generated('uuid')
+@Entity({ name: "caes" })
+export default class Cao implements CaoInterface {
+  @PrimaryGeneratedColumn("uuid")
+  @Generated("uuid")
   idCao: string;
 
   @Column({ length: 60 })
-  nome: string
+  nome: string;
 
-  @Column({ type: 'date' })
-  dataNascimento: string
+  @Column({ type: "date" })
+  dataNascimento: string;
 
   @Column({ nullable: false })
-  ativo: boolean
+  ativo: boolean;
 
   @Column({ nullable: true })
-  avatar: string
+  avatar: string;
 
   @Column({ length: 36 })
-  idAtleta: string
+  idAtleta: string;
 
-  @JoinColumn({ name: 'idAtleta' })
+  @JoinColumn({ name: "idAtleta" })
   @ManyToOne(() => Atleta, (atleta) => atleta.caes)
-  atleta: Atleta
+  atleta: Atleta;
 
   @Column({ length: 36 })
-  idRaca: string
+  idRaca: string;
 
-  @JoinColumn({ name: 'idRaca' })
+  @JoinColumn({ name: "idRaca" })
   @ManyToOne(() => Raca, (raca) => raca.caes)
-  raca: Raca
+  raca: Raca;
 
   @Column({ length: 36 })
-  idCategoria: string
+  idCategoria: string;
 
-  @JoinColumn({ name: 'idCategoria' })
+  @JoinColumn({ name: "idCategoria" })
   @ManyToOne(() => Categoria, (categoria) => categoria.caes)
-  categoria: Categoria
+  categoria: Categoria;
 
   @OneToMany(() => Inscricao, (inscricao) => inscricao.cao)
-  inscricoes: Inscricao[]
+  inscricoes: Inscricao[];
 }
