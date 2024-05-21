@@ -62,6 +62,9 @@ export default function CrudCategoria() {
         },
         camposLike: ["nome"],
         select: ["idCategoria", "nome", "observacao"],
+        status: statusForm,
+        mensagem: 'Pesquisando categorias...'
+
       })
       .then((rsCategorias: Array<CategoriaInterface>) => {
         setRsPesquisa(rsCategorias)
@@ -111,6 +114,7 @@ export default function CrudCategoria() {
         .incluir({
           entidade: "Categoria",
           criterio: rsDados,
+          status: statusForm
         })
         .then((rs) => {
           if (rs.ok) {
@@ -126,6 +130,7 @@ export default function CrudCategoria() {
       .excluir({
         entidade: "Categoria",
         criterio: rsDados,
+        status: statusForm
       })
       .then((rs) => {
         if (rs.ok) {
@@ -142,6 +147,8 @@ export default function CrudCategoria() {
         criterio: {
           idCategoria: id,
         },
+        status: statusForm,
+        mensagem: 'Pesquisando categoria...'
       })
       .then((rs: Array<CategoriaInterface>) => {
         return rs[0]

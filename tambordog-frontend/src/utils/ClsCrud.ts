@@ -9,10 +9,11 @@ import {
   ContextoGlobalInterface,
 } from "../globalstate/ContextoGlobal"
 import { MensagemStateInterface } from "../globalstate/MensagemState"
+import { StatusForm } from "./ClsStatusForm"
 
 export interface PropsInterface extends PadraoCrudInterface {
+  status: StatusForm
   mensagem?: string
-  mensagemErro?: string
   setMensagemState?: React.Dispatch<
     React.SetStateAction<MensagemStateInterface>
   >
@@ -24,7 +25,9 @@ export default class ClsCrud {
     criterio,
     camposLike,
     select,
-  }: PadraoCrudInterface): Promise<Array<any>> {
+    setMensagemState,
+    mensagem = "Pesquisando...",
+  }: PropsInterface): Promise<Array<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
       criterio: criterio,
@@ -39,6 +42,16 @@ export default class ClsCrud {
       },
     }
 
+    if (setMensagemState) {
+      setMensagemState({
+        botaoFechar: false,
+        exibir: true,
+        mensagem: mensagem,
+        tipo: "aviso",
+        titulo: "",
+      })
+    }
+
     return axios
       .post<RespostaPadraoInterface<Array<any>>>(
         "http://localhost:4000/consultar",
@@ -46,6 +59,16 @@ export default class ClsCrud {
         config
       )
       .then((rs) => {
+        if (!rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: true,
+            exibir: true,
+            mensagem: "Erro ao pesquisar!",
+            tipo: "erro",
+            titulo: "Erro...",
+          })
+        }
+
         return rs.data.dados as any
       })
   }
@@ -54,8 +77,7 @@ export default class ClsCrud {
     entidade,
     criterio,
     setMensagemState,
-    mensagem = "",
-    mensagemErro = "",
+    status,
   }: PropsInterface): Promise<RespostaPadraoInterface<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
@@ -69,13 +91,14 @@ export default class ClsCrud {
       },
     }
 
-    if (mensagem.length > 0 && setMensagemState) {
+    if (setMensagemState) {
       setMensagemState({
         botaoFechar: false,
         exibir: true,
-        mensagem: mensagem,
+        mensagem:
+          status === StatusForm.INCLUIR ? "Incluindo..." : "Alterando...",
         tipo: "aviso",
-        titulo: "Incluindo...",
+        titulo: "",
       })
     }
 
@@ -86,6 +109,29 @@ export default class ClsCrud {
         config
       )
       .then((rs) => {
+        if (rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: true,
+            exibir: true,
+            mensagem:
+              status === StatusForm.INCLUIR
+                ? "Inclusão realizada!"
+                : "Alteração realizada!",
+            tipo: "aviso",
+            titulo: "",
+          })
+        } else if (!rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: true,
+            exibir: true,
+            mensagem:
+              status === StatusForm.INCLUIR
+                ? "Erro ao incluir!"
+                : "Erro ao alterar!",
+            tipo: "erro",
+            titulo: "Erro...",
+          })
+        }
         return rs.data
       })
   }
@@ -93,7 +139,8 @@ export default class ClsCrud {
   public excluir({
     entidade,
     criterio,
-  }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
+    setMensagemState,
+  }: PropsInterface): Promise<RespostaPadraoInterface<any>> {
     const dados: PadraoCrudInterface = {
       entidade: entidade,
       criterio: criterio,
@@ -107,12 +154,40 @@ export default class ClsCrud {
       data: dados,
     }
 
+    if (setMensagemState) {
+      setMensagemState({
+        botaoFechar: false,
+        exibir: true,
+        mensagem: "Excluindo...",
+        tipo: "aviso",
+        titulo: "",
+      })
+    }
+
     return axios
       .delete<RespostaPadraoInterface<Array<any>>>(
         "http://localhost:4000/excluir",
         config
       )
       .then((rs) => {
+        if (rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: true,
+            exibir: true,
+            mensagem: "Exclusão realizada!",
+            tipo: "aviso",
+            titulo: "",
+          })
+        } else if (!rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: true,
+            exibir: true,
+            mensagem: "Erro na exclusão!",
+            tipo: "erro",
+            titulo: "Erro...",
+          })
+        }
+
         return rs.data
       })
   }

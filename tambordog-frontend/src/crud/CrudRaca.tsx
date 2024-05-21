@@ -56,6 +56,8 @@ export default function CrudRaca() {
         },
         camposLike: ["nome"],
         select: ["idRaca", "nome"],
+        status: statusForm,
+        mensagem: "Pesquisando raças...",
       })
       .then((rsRacas: Array<RacaInterface>) => {
         setRsPesquisa(rsRacas)
@@ -97,6 +99,7 @@ export default function CrudRaca() {
         .incluir({
           entidade: "Raca",
           criterio: rsDados,
+          status: statusForm,
         })
         .then((rs) => {
           if (rs.ok) {
@@ -112,6 +115,7 @@ export default function CrudRaca() {
       .excluir({
         entidade: "Raca",
         criterio: rsDados,
+        status: statusForm,
       })
       .then((rs) => {
         if (rs.ok) {
@@ -128,6 +132,8 @@ export default function CrudRaca() {
         criterio: {
           idRaca: id,
         },
+        status: statusForm,
+        mensagem: "Pesquisando raça",
       })
       .then((rsRaca: Array<RacaInterface>) => {
         return rsRaca[0]

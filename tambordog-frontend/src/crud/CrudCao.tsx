@@ -20,6 +20,9 @@ import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 import { AtletaInterface } from "../../../tambordog-backend/src/interfaces/atleta.interfaces"
 import ShowText from "../components/ShowText"
 import { CaoInterface } from "../../../tambordog-backend/src/interfaces/cao.interfaces"
+import { CategoriaInterface } from "../../../tambordog-backend/src/interfaces/categoria.interfaces"
+import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
+import ComboBox from "../components/ComboBox"
 
 interface PropsInterface {
   rsAtleta: AtletaInterface
@@ -32,6 +35,12 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
 
   const clsCrud = new ClsCrud()
 
+  const [rsCategorias, setRsCategorias] = useState<Array<CategoriaInterface>>(
+    []
+  )
+
+  const [rsRacas, setRsRacas] = useState<Array<RacaInterface>>([])
+
   const [pesquisa, setPesquisa] = useState({
     descricao: "",
   })
@@ -43,8 +52,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
     dataNascimento: "",
     ativo: true,
     avatar: "",
-    idAtleta: "",
-    idCao: "",
+    idAtleta: rsAtleta.idAtleta as string,
     idCategoria: "",
     idRaca: "",
   }
@@ -76,6 +84,8 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
           idAtleta: rsAtleta.idAtleta,
         },
         select: ["idCao", "nome", "dataNascimento"],
+        status: statusForm,
+        mensagem: "Pesquisando cães...",
       })
       .then((rs: Array<CaoInterface>) => {
         setRsPesquisa(rs)
@@ -119,11 +129,10 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         .incluir({
           entidade: "Cao",
           criterio: rsDados,
-          mensagem: "Incluindo Cão...",
+          status: statusForm,
           setMensagemState: setMensagemState,
         })
         .then((rs) => {
-            
           if (rs.ok) {
             btPesquisar()
             setStatusForm(StatusForm.PESQUISAR)
@@ -145,6 +154,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
       .excluir({
         entidade: "Cao",
         criterio: rsDados,
+        status: statusForm,
       })
       .then((rs) => {
         if (rs.ok) {
@@ -161,6 +171,8 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         criterio: {
           idCao: id,
         },
+        status: statusForm,
+        mensagem: "Pesquisando cão",
       })
       .then((rs: Array<CaoInterface>) => {
         return rs[0]
@@ -189,8 +201,36 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
     ContextoGlobal
   ) as ContextoGlobalInterface
 
+  const pesquisarRacas = () => {
+    clsCrud
+      .consultar({
+        entidade: "Raca",
+        criterio: {},
+        select: ["idRaca", "nome"],
+        status: statusForm,
+      })
+      .then((rs: Array<RacaInterface>) => {
+        setRsRacas(rs)
+      })
+  }
+
+  const pesquisarCategorias = () => {
+    clsCrud
+      .consultar({
+        entidade: "Categoria",
+        criterio: {},
+        select: ["idCategoria", "nome"],
+        status: statusForm,
+      })
+      .then((rs: Array<CategoriaInterface>) => {
+        setRsCategorias(rs)
+      })
+  }
+
   useEffect(() => {
     setLayoutState({ ...layoutState, titulo: "Cadastro de Cães" })
+    pesquisarCategorias()
+    pesquisarRacas()
     btPesquisar()
   }, [])
 
@@ -270,6 +310,58 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
                     maxLength={35}
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Data Nascimento"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="dataNascimento"
+                    tipo="date"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Ativo"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="ativo"
+                    tipo="checkbox"
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <ComboBox
+                    opcoes={rsRacas}
+                    campoDescricao="nome"
+                    campoID="idRaca"
+                    dados={rsDados}
+                    mensagemPadraoCampoEmBranco="Escolha uma raça"
+                    field="idRaca"
+                    label="Raça"
+                    erros={erros}
+                    setState={setRsDados}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <ComboBox
+                    opcoes={rsCategorias}
+                    campoDescricao="nome"
+                    campoID="idCategoria"
+                    dados={rsDados}
+                    mensagemPadraoCampoEmBranco="Escolha uma categoria"
+                    field="idCategoria"
+                    label="Categoria"
+                    erros={erros}
+                    setState={setRsDados}
                   />
                 </Grid>
 

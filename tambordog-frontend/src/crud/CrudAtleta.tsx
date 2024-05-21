@@ -92,6 +92,8 @@ export default function CrudAtleta() {
         },
         camposLike: ["nome"],
         select: ["idAtleta", "nome", "cpf", "telefone", "whatsapp", "ativo"],
+        status: statusForm as any,
+        mensagem: 'Pesquisando atletas...'
       })
       .then((rs: Array<AtletaInterface>) => {
         setRsPesquisa(rs)
@@ -164,6 +166,7 @@ export default function CrudAtleta() {
         .incluir({
           entidade: "Atleta",
           criterio: rsDados,
+          status: statusForm as any
         })
         .then((rs) => {
           if (rs.ok) {
@@ -179,6 +182,7 @@ export default function CrudAtleta() {
       .excluir({
         entidade: "Atleta",
         criterio: rsDados,
+        status: statusForm as any
       })
       .then((rs) => {
         if (rs.ok) {
@@ -195,6 +199,8 @@ export default function CrudAtleta() {
         criterio: {
           idAtleta: id,
         },
+        status: statusForm as any,
+        mensagem: 'Pesquisando atleta'
       })
       .then((rs: Array<AtletaInterface>) => {
         return rs[0]
