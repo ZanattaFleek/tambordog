@@ -54,6 +54,10 @@ export default function CrudAtleta() {
 
   const [rsDados, setRsDados] = useState<AtletaInterface>(resetDados)
 
+  const { mensagemState, setMensagemState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
   const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
       cabecalho: "Nome",
@@ -93,7 +97,8 @@ export default function CrudAtleta() {
         camposLike: ["nome"],
         select: ["idAtleta", "nome", "cpf", "telefone", "whatsapp", "ativo"],
         status: statusForm as any,
-        mensagem: 'Pesquisando atletas...'
+        mensagem: 'Pesquisando atletas...',
+        setMensagemState: setMensagemState
       })
       .then((rs: Array<AtletaInterface>) => {
         setRsPesquisa(rs)
@@ -166,7 +171,8 @@ export default function CrudAtleta() {
         .incluir({
           entidade: "Atleta",
           criterio: rsDados,
-          status: statusForm as any
+          status: statusForm as any,
+          setMensagemState: setMensagemState
         })
         .then((rs) => {
           if (rs.ok) {
@@ -182,7 +188,8 @@ export default function CrudAtleta() {
       .excluir({
         entidade: "Atleta",
         criterio: rsDados,
-        status: statusForm as any
+        status: statusForm as any,
+        setMensagemState: setMensagemState
       })
       .then((rs) => {
         if (rs.ok) {
@@ -200,7 +207,8 @@ export default function CrudAtleta() {
           idAtleta: id,
         },
         status: statusForm as any,
-        mensagem: 'Pesquisando atleta'
+        mensagem: 'Pesquisando atleta',
+        setMensagemState: setMensagemState
       })
       .then((rs: Array<AtletaInterface>) => {
         return rs[0]

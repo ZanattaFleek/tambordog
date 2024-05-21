@@ -40,6 +40,10 @@ export default function CrudCategoria() {
 
   const [rsDados, setRsDados] = useState<CategoriaInterface>(resetDados)
 
+  const { mensagemState, setMensagemState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
   const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
       cabecalho: "Nome",
@@ -63,8 +67,8 @@ export default function CrudCategoria() {
         camposLike: ["nome"],
         select: ["idCategoria", "nome", "observacao"],
         status: statusForm,
-        mensagem: 'Pesquisando categorias...'
-
+        mensagem: 'Pesquisando categorias...',
+        setMensagemState: setMensagemState
       })
       .then((rsCategorias: Array<CategoriaInterface>) => {
         setRsPesquisa(rsCategorias)
@@ -114,7 +118,8 @@ export default function CrudCategoria() {
         .incluir({
           entidade: "Categoria",
           criterio: rsDados,
-          status: statusForm
+          status: statusForm,
+          setMensagemState: setMensagemState
         })
         .then((rs) => {
           if (rs.ok) {
@@ -130,7 +135,8 @@ export default function CrudCategoria() {
       .excluir({
         entidade: "Categoria",
         criterio: rsDados,
-        status: statusForm
+        status: statusForm,
+        setMensagemState: setMensagemState
       })
       .then((rs) => {
         if (rs.ok) {
@@ -148,7 +154,8 @@ export default function CrudCategoria() {
           idCategoria: id,
         },
         status: statusForm,
-        mensagem: 'Pesquisando categoria...'
+        mensagem: 'Pesquisando categoria...',
+        setMensagemState: setMensagemState
       })
       .then((rs: Array<CategoriaInterface>) => {
         return rs[0]

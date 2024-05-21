@@ -23,6 +23,7 @@ import { CaoInterface } from "../../../tambordog-backend/src/interfaces/cao.inte
 import { CategoriaInterface } from "../../../tambordog-backend/src/interfaces/categoria.interfaces"
 import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
 import ComboBox from "../components/ComboBox"
+import ClsFormatacao from "../utils/ClsFormatacao"
 
 interface PropsInterface {
   rsAtleta: AtletaInterface
@@ -30,6 +31,8 @@ interface PropsInterface {
 
 export default function CrudCao({ rsAtleta }: PropsInterface) {
   const [erros, setErros] = useState({})
+
+  const clsFormatacao: ClsFormatacao = new ClsFormatacao()
 
   const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
 
@@ -68,6 +71,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
     {
       cabecalho: "Data Nascimento",
       campo: "dataNascimento",
+      format: (data) => clsFormatacao.dataISOtoUser(data),
     },
     {
       cabecalho: "Ativo",
@@ -83,7 +87,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         criterio: {
           idAtleta: rsAtleta.idAtleta,
         },
-        select: ["idCao", "nome", "dataNascimento"],
+        select: ["idCao", "nome", "dataNascimento", "ativo"],
         status: statusForm,
         mensagem: "Pesquisando cães...",
       })
@@ -115,6 +119,24 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
       retorno,
       "Nome do cão não pode ser vazio"
     )
+
+    retorno = clsValidacao.naoVazio(
+      "idCategoria",
+      rsDados,
+      tmpErros,
+      retorno,
+      "Informe uma categoria"
+    )
+
+    retorno = clsValidacao.naoVazio(
+      "idRaca",
+      rsDados,
+      tmpErros,
+      retorno,
+      "Informe uma raça"
+    )
+
+    retorno = clsValidacao.eData("dataNascimento", rsDados, tmpErros, retorno)
 
     // TODO - Validar Dados....
 
@@ -155,6 +177,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         entidade: "Cao",
         criterio: rsDados,
         status: statusForm,
+        setMensagemState: setMensagemState,
       })
       .then((rs) => {
         if (rs.ok) {
@@ -173,6 +196,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         },
         status: statusForm,
         mensagem: "Pesquisando cão",
+        setMensagemState: setMensagemState,
       })
       .then((rs: Array<CaoInterface>) => {
         return rs[0]
@@ -208,6 +232,7 @@ export default function CrudCao({ rsAtleta }: PropsInterface) {
         criterio: {},
         select: ["idRaca", "nome"],
         status: statusForm,
+        setMensagemState: setMensagemState,
       })
       .then((rs: Array<RacaInterface>) => {
         setRsRacas(rs)

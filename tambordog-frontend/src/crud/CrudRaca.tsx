@@ -39,6 +39,10 @@ export default function CrudRaca() {
 
   const [rsDados, setRsDados] = useState<RacaInterface>(resetDados)
 
+  const { mensagemState, setMensagemState } = useContext(
+    ContextoGlobal
+  ) as ContextoGlobalInterface
+
   const cabecalhoListCrud: Array<DataTableCabecalhoInterface> = [
     {
       cabecalho: "Nome",
@@ -58,6 +62,7 @@ export default function CrudRaca() {
         select: ["idRaca", "nome"],
         status: statusForm,
         mensagem: "Pesquisando raças...",
+        setMensagemState: setMensagemState
       })
       .then((rsRacas: Array<RacaInterface>) => {
         setRsPesquisa(rsRacas)
@@ -100,6 +105,7 @@ export default function CrudRaca() {
           entidade: "Raca",
           criterio: rsDados,
           status: statusForm,
+          setMensagemState: setMensagemState
         })
         .then((rs) => {
           if (rs.ok) {
@@ -116,6 +122,7 @@ export default function CrudRaca() {
         entidade: "Raca",
         criterio: rsDados,
         status: statusForm,
+        setMensagemState: setMensagemState
       })
       .then((rs) => {
         if (rs.ok) {
@@ -134,6 +141,7 @@ export default function CrudRaca() {
         },
         status: statusForm,
         mensagem: "Pesquisando raça",
+        setMensagemState: setMensagemState
       })
       .then((rsRaca: Array<RacaInterface>) => {
         return rsRaca[0]

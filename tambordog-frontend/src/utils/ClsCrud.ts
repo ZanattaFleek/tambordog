@@ -59,7 +59,15 @@ export default class ClsCrud {
         config
       )
       .then((rs) => {
-        if (!rs.data.ok && setMensagemState) {
+        if (rs.data.ok && setMensagemState) {
+          setMensagemState({
+            botaoFechar: false,
+            exibir: false,
+            mensagem: "",
+            tipo: "aviso",
+            titulo: "",
+          })
+        } else if (!rs.data.ok && setMensagemState) {
           setMensagemState({
             botaoFechar: true,
             exibir: true,
