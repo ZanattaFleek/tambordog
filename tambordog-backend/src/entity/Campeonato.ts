@@ -6,15 +6,16 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Prova from "./Prova";
+import { CampeonatoInterface } from "../interfaces/campeonato.interfaces";
 
 @Entity({ name: "campeonatos" })
-export default class Campeonato {
+export default class Campeonato implements CampeonatoInterface {
   @PrimaryGeneratedColumn("uuid")
   @Generated("uuid")
   idCampeonato: string;
 
   @Column({ length: 35 })
-  nomeCampeonato: string;
+  nome: string;
 
   @Column({ type: "text" })
   descritivo: string;
@@ -25,6 +26,6 @@ export default class Campeonato {
   @Column({ length: "150" })
   pdfFile: string;
 
-  @OneToMany(() => Prova, (prova) => prova.campeonato)
-  provas: Prova[];
+  @OneToMany(() => Prova, (prova) => prova.Campeonato)
+  Provas: Prova[];
 }

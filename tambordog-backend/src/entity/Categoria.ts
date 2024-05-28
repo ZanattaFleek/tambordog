@@ -25,5 +25,5 @@ export default class Categoria implements CategoriaInterface {
   caes: Cao[];
 
   @OneToMany(() => Inscricao, (inscricao) => inscricao.categoria)
-  inscricoes: Inscricao[];
+  Inscricoes: Inscricao[];
 }

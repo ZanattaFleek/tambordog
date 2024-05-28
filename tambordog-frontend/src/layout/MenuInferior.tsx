@@ -11,9 +11,20 @@ import HomeIcon from "@mui/icons-material/Home"
 import PetsIcon from "@mui/icons-material/Pets"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
+import PersonIcon from "@mui/icons-material/Person"
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed"
+import CrudCao from "../crud/CrudCao"
+
+import { useNavigate } from "react-router-dom"
 
 export default function MenuInferior() {
   const [value, setValue] = React.useState(0)
+
+  const navigate = useNavigate()
+
+  const irPara = (url: string) => {
+    navigate(url)
+  }
 
   return (
     <Paper
@@ -23,13 +34,32 @@ export default function MenuInferior() {
       <BottomNavigation
         value={value}
         onChange={(_event, newValue) => {
-          console.log("New Value", newValue)
           setValue(newValue)
         }}
       >
-        <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-        <BottomNavigationAction label="Cadastro de Cão" icon={<PetsIcon />} />
-        <BottomNavigationAction label="Eventos" icon={<CalendarMonthIcon />} />
+        <BottomNavigationAction
+          label="Home"
+          icon={<HomeIcon />}
+          onClick={() => irPara("/")}
+        />
+        <BottomNavigationAction
+          label="Atletas"
+          icon={<PersonIcon />}
+          onClick={() => irPara("/CrudAtleta")}
+        />
+
+        <BottomNavigationAction
+          label="Raça"
+          icon={<PetsIcon />}
+          onClick={() => irPara("/CrudRaca")}
+        />
+
+        <BottomNavigationAction
+          label="Categoria"
+          icon={<DynamicFeedIcon />}
+          onClick={() => irPara("/CrudCategoria")}
+        />
+
         <BottomNavigationAction
           label="Minha Conta"
           icon={<AccountCircleIcon />}

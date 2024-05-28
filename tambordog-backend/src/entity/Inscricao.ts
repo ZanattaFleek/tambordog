@@ -36,14 +36,14 @@ export default class Inscricao {
   idCategoria: string
 
   @JoinColumn({ name: 'idCategoria' })
-  @ManyToOne(() => Categoria, (categoria) => categoria.inscricoes)
+  @ManyToOne(() => Categoria, (categoria) => categoria.Inscricoes)
   categoria: Categoria
 
   @Column({ length: 36 })
   idProva: string
 
   @JoinColumn({ name: 'idProva' })
-  @ManyToOne(() => Prova, (prova) => prova.inscricoes)
+  @ManyToOne(() => Prova, (prova) => prova.Inscricoes)
   prova: Prova
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
