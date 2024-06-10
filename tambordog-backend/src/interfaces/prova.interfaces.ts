@@ -3,6 +3,7 @@ import { StatusProvaType } from "../types/ProvaTypes";
 
 export interface ProvaInterface {
   idProva: string;
+  idCampeonato: string | null;
   nomeProva: string;
   endereco: string;
   bairro: string;
@@ -18,7 +19,12 @@ export interface ProvaInterface {
   telefone: string;
   whatsapp: string;
   email: string;
-  observacao: string;
+  informativo: string;
   status: StatusProvaType;
-  idCampeonato: string | null;
+}
+
+export interface ProvaCategoriaInterface {
+  idProva: string;
+  idCategoria: string;
+  qtdPistas: number;
 }

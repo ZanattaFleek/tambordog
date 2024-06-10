@@ -4,11 +4,11 @@ import {
   Generated,
   JoinColumn,
   ManyToOne,
-  OneToMany,
+  // OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PisoTypes } from "../types/PisoTypes";
-import Inscricao from "./Inscricao";
+// import Inscricao from "./Inscricao";
 import Campeonato from "./Campeonato";
 import { ProvaInterface } from "../interfaces/prova.interfaces";
 import { StatusProvaType } from "../types/ProvaTypes";
@@ -43,7 +43,7 @@ export default class Prova implements ProvaInterface {
   @Column({ length: 10 })
   long: string;
 
-  @Column({ type: "string", length: 2 })
+  @Column({ type: "varchar", length: 2 })
   tipoPiso: PisoTypes;
 
   @Column({ type: "datetime" })
@@ -65,7 +65,7 @@ export default class Prova implements ProvaInterface {
   email: string;
 
   @Column({ type: "text" })
-  observacao: string;
+  informativo: string;
 
   @Column({ length: 2 })
   status: StatusProvaType;
@@ -73,8 +73,10 @@ export default class Prova implements ProvaInterface {
   @Column({ length: 36, nullable: true })
   idCampeonato: string | null;
 
+  /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.prova)
   Inscricoes: Inscricao[];
+*/
 
   @JoinColumn({ name: "idCampeonato" })
   @ManyToOne(() => Campeonato, (campeonato) => campeonato.Provas)

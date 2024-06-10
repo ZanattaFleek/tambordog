@@ -52,6 +52,8 @@ export default class Cao implements CaoInterface {
   @ManyToOne(() => Categoria, (categoria) => categoria.caes)
   categoria: Categoria;
 
+  /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.cao)
   inscricoes: Inscricao[];
+  */
 }

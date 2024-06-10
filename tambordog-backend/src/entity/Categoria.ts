@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Cao from "./Cao";
-import Inscricao from "./Inscricao";
+// import Inscricao from "./Inscricao";
 import { CategoriaInterface } from "../interfaces/categoria.interfaces";
 
 @Entity({ name: "categorias" })
@@ -24,6 +24,8 @@ export default class Categoria implements CategoriaInterface {
   @OneToMany(() => Cao, (cao) => cao.categoria)
   caes: Cao[];
 
+  /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.categoria)
   Inscricoes: Inscricao[];
+  */
 }

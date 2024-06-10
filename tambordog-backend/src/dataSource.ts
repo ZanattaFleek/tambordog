@@ -2,10 +2,10 @@ import { DataSource } from "typeorm";
 import Cao from "./entity/Cao";
 import Atleta from "./entity/Atleta";
 import Categoria from "./entity/Categoria";
-import Inscricao from "./entity/Inscricao";
+// import Inscricao from "./entity/Inscricao";
 import Prova from "./entity/Prova";
 import Raca from "./entity/Raca";
-import Sumula from "./entity/Sumula";
+// import Sumula from "./entity/Sumula";
 import Campeonato from "./entity/Campeonato";
 
 export const AppDataSource = new DataSource({
@@ -22,10 +22,10 @@ export const AppDataSource = new DataSource({
     Atleta,
     Categoria,
     Campeonato,
-    Inscricao,
+    // Inscricao,
     Prova,
     Raca,
-    Sumula,
+    // Sumula,
   ],
   subscribers: [],
   migrations: [],
