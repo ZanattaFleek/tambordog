@@ -65,13 +65,16 @@ export default class Prova implements ProvaInterface {
   email: string;
 
   @Column({ type: "text" })
-  informativo: string;
+  termoAceite: string;
 
   @Column({ length: 2 })
   status: StatusProvaType;
 
   @Column({ length: 36, nullable: true })
   idCampeonato: string | null;
+
+  @Column({ default: false })
+  foto: boolean;
 
   /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.prova)

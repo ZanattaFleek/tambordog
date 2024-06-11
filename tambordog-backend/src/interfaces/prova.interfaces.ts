@@ -2,7 +2,7 @@ import { PisoTypes } from "../types/PisoTypes";
 import { StatusProvaType } from "../types/ProvaTypes";
 
 export interface ProvaInterface {
-  idProva: string;
+  idProva?: string;
   idCampeonato: string | null;
   nomeProva: string;
   endereco: string;
@@ -19,11 +19,13 @@ export interface ProvaInterface {
   telefone: string;
   whatsapp: string;
   email: string;
-  informativo: string;
   status: StatusProvaType;
+  termoAceite: string;
+  foto: boolean;
 }
 
 export interface ProvaCategoriaInterface {
+  idProvaCategoria?: string;
   idProva: string;
   idCategoria: string;
   qtdPistas: number;

@@ -7,6 +7,7 @@ import Prova from "./entity/Prova";
 import Raca from "./entity/Raca";
 // import Sumula from "./entity/Sumula";
 import Campeonato from "./entity/Campeonato";
+import ProvaCategoria from "./entity/ProvaCategoria";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -24,6 +25,7 @@ export const AppDataSource = new DataSource({
     Campeonato,
     // Inscricao,
     Prova,
+    ProvaCategoria,
     Raca,
     // Sumula,
   ],

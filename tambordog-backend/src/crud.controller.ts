@@ -1,22 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Put,
-  Query,
-} from "@nestjs/common";
-import { AppDataSource } from "./dataSource";
-import Categoria from "./entity/Categoria";
-import { Like } from "typeorm";
+import { Body, Controller, Delete, Post, Put } from "@nestjs/common";
 import { RespostaPadraoInterface } from "./interfaces/padrao.interfaces";
-import { CategoriaInterface } from "./interfaces/categoria.interfaces";
-import ClsCategoriaController from "./categoria.controller.cls";
-// import { AppService } from "./app.service";
+import ClsCategoriaController from "./crud.controller.cls";
 
 @Controller()
-export class CategoriaController {
+export class CrudController {
   constructor() {} //private readonly appService: AppService
 
   @Post("incluir")
@@ -57,16 +44,4 @@ export class CategoriaController {
       select: select ? select : [],
     });
   }
-
-  /*
-  @Put("/categoria")
-  putCategoria(): string {
-    return "Put Pedro Categoria";
-  }
-
-  @Delete("/categoria")
-  deleteCategoria(): string {
-    return "Delete Categoria";
-  }
-  */
 }
