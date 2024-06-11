@@ -17,17 +17,8 @@ export default class Campeonato implements CampeonatoInterface {
   @Column({ length: 35 })
   nome: string;
 
-  @Column({ type: "text" })
-  descritivo: string;
-
   @Column({ nullable: true })
   ativo: boolean;
-
-  @Column({ length: "150" })
-  pdfFile: string;
-
-  @Column({ type: "text" })
-  informativo: string;
 
   @OneToMany(() => Prova, (prova) => prova.Campeonato)
   Provas: Prova[];

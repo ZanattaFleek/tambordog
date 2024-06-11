@@ -1,5 +1,5 @@
 export interface CampeonatoInterface {
-  idCampeonato: string;
+  idCampeonato?: string;
   nome: string;
   ativo: boolean;
 }

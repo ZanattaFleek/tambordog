@@ -6,6 +6,8 @@ import CrudAtleta from "../crud/CrudAtleta"
 import CadastroUsuario from "../app/CadastroUsuario"
 import CrudRaca from "../crud/CrudRaca"
 import CrudCategoria from "../crud/CrudCategoria"
+import CrudCampeonato from "../crud/CrudCampeonato"
+import CrudProva from "../crud/CrudProva"
 
 export const RotasAPP = createBrowserRouter([
   {
@@ -19,7 +21,7 @@ export const RotasAPP = createBrowserRouter([
       {
         path: "/CrudAtleta",
         element: <CrudAtleta />,
-      },      
+      },
       {
         path: "/CrudRaca",
         element: <CrudRaca />,
@@ -27,6 +29,14 @@ export const RotasAPP = createBrowserRouter([
       {
         path: "/CrudCategoria",
         element: <CrudCategoria />,
+      },
+      {
+        path: "/CrudCampeonato",
+        element: <CrudCampeonato />,
+      },
+      {
+        path: "/CrudProva",
+        element: <CrudProva />,
       },
       {
         path: "/EventosEmAberto",

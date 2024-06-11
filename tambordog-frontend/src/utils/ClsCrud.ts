@@ -1,13 +1,8 @@
-import { useContext } from "react"
 import {
   PadraoCrudInterface,
   RespostaPadraoInterface,
 } from "../../../tambordog-backend/src/interfaces/padrao.interfaces"
 import axios, { AxiosRequestConfig } from "axios"
-import {
-  ContextoGlobal,
-  ContextoGlobalInterface,
-} from "../globalstate/ContextoGlobal"
 import { MensagemStateInterface } from "../globalstate/MensagemState"
 import { StatusForm } from "./ClsStatusForm"
 
@@ -129,6 +124,7 @@ export default class ClsCrud {
             titulo: "",
           })
         } else if (!rs.data.ok && setMensagemState) {
+          console.log(rs.data.mensagem)
           setMensagemState({
             botaoFechar: true,
             exibir: true,
