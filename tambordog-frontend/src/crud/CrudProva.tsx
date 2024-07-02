@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 
-import { RacaInterface } from "../../../tambordog-backend/src/interfaces/raca.interfaces"
+import { ProvaInterface } from "../../../tambordog-backend/src/interfaces/prova.interfaces"
 
 import { Grid, IconButton, Paper, Tooltip } from "@mui/material"
 import InputFormat from "../components/InputFormat"
@@ -19,8 +19,13 @@ import {
   ContextoGlobalInterface,
 } from "../globalstate/ContextoGlobal"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
+import { PisoTypes } from "../backendImports/types/PisoTypes"
+import { StatusProvaType } from "../backendImports/types/ProvaTypes"
+import ClsFormatacao from "../utils/ClsFormatacao"
 
 export default function CrudProva() {
+  const clsFormatacao: ClsFormatacao = new ClsFormatacao()
+
   const [erros, setErros] = useState({})
 
   const [statusForm, setStatusForm] = useState<StatusForm>(StatusForm.PESQUISAR)
@@ -31,13 +36,31 @@ export default function CrudProva() {
     descricao: "",
   })
 
-  const [rsPesquisa, setRsPesquisa] = useState<Array<RacaInterface>>([])
+  const [rsPesquisa, setRsPesquisa] = useState<Array<ProvaInterface>>([])
 
-  const resetDados: RacaInterface = {
-    nome: "",
+  const resetDados: ProvaInterface = {
+    idCampeonato: null,
+    nomeProva: "",
+    endereco: "",
+    bairro: "",
+    cidade: "",
+    uf: "",
+    cep: "",
+    lat: "",
+    long: "",
+    tipoPiso: PisoTypes.areia,
+    dataHoraProva: "",
+    valorProva: 0,
+    valorProvaAte12: 0,
+    telefone: "",
+    whatsapp: "",
+    email: "",
+    status: StatusProvaType.inscAberta,
+    termoAceite: "",
+    foto: false,
   }
 
-  const [rsDados, setRsDados] = useState<RacaInterface>(resetDados)
+  const [rsDados, setRsDados] = useState<ProvaInterface>(resetDados)
 
   const { mensagemState, setMensagemState } = useContext(
     ContextoGlobal
@@ -47,25 +70,25 @@ export default function CrudProva() {
     {
       cabecalho: "Nome",
       alinhamento: "left",
-      campo: "nome",
+      campo: "nomeProva",
     },
   ]
 
   const btPesquisar = () => {
     clsCrud
       .consultar({
-        entidade: "Raca",
+        entidade: "Prova",
         criterio: {
-          nome: "%".concat(pesquisa.descricao).concat("%"),
+          nomeProva: "%".concat(pesquisa.descricao).concat("%"),
         },
-        camposLike: ["nome"],
-        select: ["idRaca", "nome"],
+        camposLike: ["nomeProva"],
+        select: ["idProva", "nomeProva"],
         status: statusForm,
-        mensagem: "Pesquisando raças...",
-        setMensagemState: setMensagemState
+        mensagem: "Pesquisando provas...",
+        setMensagemState: setMensagemState,
       })
-      .then((rsRacas: Array<RacaInterface>) => {
-        setRsPesquisa(rsRacas)
+      .then((rs: Array<ProvaInterface>) => {
+        setRsPesquisa(rs)
       })
   }
 
@@ -86,11 +109,11 @@ export default function CrudProva() {
     let tmpErros = {}
 
     retorno = clsValidacao.naoVazio(
-      "nome",
+      "nomeProva",
       rsDados,
       tmpErros,
       retorno,
-      "Nome da raça não pode ser vazio"
+      "Nome da prova não pode ser vazio"
     )
 
     setErros(tmpErros)
@@ -102,10 +125,10 @@ export default function CrudProva() {
     if (validarDados()) {
       clsCrud
         .incluir({
-          entidade: "Raca",
+          entidade: "Prova",
           criterio: rsDados,
           status: statusForm,
-          setMensagemState: setMensagemState
+          setMensagemState: setMensagemState,
         })
         .then((rs) => {
           if (rs.ok) {
@@ -119,10 +142,10 @@ export default function CrudProva() {
   const btConfirmarExclusao = () => {
     clsCrud
       .excluir({
-        entidade: "Raca",
+        entidade: "Prova",
         criterio: rsDados,
         status: statusForm,
-        setMensagemState: setMensagemState
+        setMensagemState: setMensagemState,
       })
       .then((rs) => {
         if (rs.ok) {
@@ -132,25 +155,31 @@ export default function CrudProva() {
       })
   }
 
-  const pesquisaPorId = (id: string | number): Promise<RacaInterface> => {
+  const pesquisaPorId = (id: string | number): Promise<ProvaInterface> => {
     return clsCrud
       .consultar({
-        entidade: "Raca",
+        entidade: "Prova",
         criterio: {
-          idRaca: id,
+          idProva: id,
         },
         status: statusForm,
-        mensagem: "Pesquisando raça",
-        setMensagemState: setMensagemState
+        mensagem: "Pesquisando prova",
+        setMensagemState: setMensagemState,
       })
-      .then((rsRaca: Array<RacaInterface>) => {
-        return rsRaca[0]
+      .then((rs: Array<ProvaInterface>) => {
+        return {
+          ...rs[0],
+          dataHoraProva: clsFormatacao.dataTimeZoneZtoLocalInput(
+            rs[0].dataHoraProva
+          ),
+        }
       })
   }
 
   const onEditar = (id: string | number) => {
-    pesquisaPorId(id).then((rsRaca) => {
-      setRsDados(rsRaca)
+    pesquisaPorId(id).then((rs) => {
+      console.log("Campos Que retornaram: ", rs)
+      setRsDados(rs)
       setStatusForm(StatusForm.ALTERAR)
     })
   }
@@ -167,7 +196,7 @@ export default function CrudProva() {
   ) as ContextoGlobalInterface
 
   useEffect(() => {
-    setLayoutState({ ...layoutState, titulo: "Cadastro de Raças" })
+    setLayoutState({ ...layoutState, titulo: "Cadastro de Provas" })
   }, [])
 
   return (
@@ -191,7 +220,7 @@ export default function CrudProva() {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <Tooltip title="Nova Raça">
+                  <Tooltip title="Nova Prova">
                     <IconButton
                       color="secondary"
                       sx={{ mt: 5, ml: { xs: 0, md: 2 } }}
@@ -209,14 +238,14 @@ export default function CrudProva() {
                     acoes={[
                       {
                         icone: "edit",
-                        onAcionador: (rs: RacaInterface) =>
-                          onEditar(rs.idRaca as string),
+                        onAcionador: (rs: ProvaInterface) =>
+                          onEditar(rs.idProva as string),
                         toolTip: "Editar",
                       },
                       {
                         icone: "delete",
-                        onAcionador: (rs: RacaInterface) =>
-                          onExcluir(rs.idRaca as string),
+                        onAcionador: (rs: ProvaInterface) =>
+                          onExcluir(rs.idProva as string),
                         toolTip: "Excluir",
                       },
                     ]}
@@ -230,8 +259,20 @@ export default function CrudProva() {
                     label="Nome"
                     setState={setRsDados}
                     dados={rsDados}
-                    field="nome"
+                    field="nomeProva"
                     maxLength={35}
+                    erros={erros}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFormat
+                    label="Data Hora Prova"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="dataHoraProva"
+                    type="datetime-local"
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
                   />
@@ -292,6 +333,7 @@ export default function CrudProva() {
           </Paper>
         </Grid>
       </Grid>
+      <p>{JSON.stringify(rsDados)}</p>
     </>
   )
 }

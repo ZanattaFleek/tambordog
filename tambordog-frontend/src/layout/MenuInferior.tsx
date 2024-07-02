@@ -32,11 +32,12 @@ export default function MenuInferior() {
   const navigate = useNavigate()
 
   const irPara = (url: string) => {
+    setAnchorElUser(null)
     navigate(url)
   }
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("oi....")
+    // console.log("oi....")
     setAnchorElUser(event.currentTarget)
   }
 

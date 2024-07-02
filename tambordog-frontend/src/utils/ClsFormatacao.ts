@@ -50,4 +50,8 @@ export default class ClsFormatacao {
       return ""
     }
   }
+
+  public dataTimeZoneZtoLocalInput(data: string): string {
+    return DateTime.fromISO(data).toFormat("yyyy-MM-dd'T'HH:mm")
+  }
 }
