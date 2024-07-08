@@ -4,7 +4,7 @@ import Sumula from './Sumula';
 // import Prova from './Prova';
 // import Atleta from './Atleta';
 import Cao from './Cao';
-import { InscricaoTypes } from '../types/InscricaoTypes';
+import { InscricaoType } from '../types/InscricaoTypes';
 
 @Entity({ name: 'inscricoes' })
 export default class Inscricao {
@@ -54,8 +54,8 @@ export default class Inscricao {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   valor: number
 
-  @Column({ type: 'enum', enum: InscricaoTypes })
-  statusInscricao: InscricaoTypes
+  @Column({ type: 'enum', enum: InscricaoType })
+  statusInscricao: InscricaoType
 
   @OneToOne(() => Sumula, sumula => sumula.inscricao)
   @JoinColumn({ name: 'idSumula' })

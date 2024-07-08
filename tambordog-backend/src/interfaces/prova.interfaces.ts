@@ -1,4 +1,4 @@
-import { PisoTypes } from "../types/PisoTypes";
+import { PisoType } from "../types/PisoTypes";
 import { StatusProvaType } from "../types/ProvaTypes";
 
 export interface ProvaInterface {
@@ -12,7 +12,7 @@ export interface ProvaInterface {
   cep: string;
   lat: string;
   long: string;
-  tipoPiso: PisoTypes;
+  tipoPiso: PisoType;
   dataHoraProva: string;
   valorProva: number;
   valorProvaAte12: number;

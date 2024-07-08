@@ -22,6 +22,7 @@ import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 import { PisoTypes } from "../backendImports/types/PisoTypes"
 import { StatusProvaType } from "../backendImports/types/ProvaTypes"
 import ClsFormatacao from "../utils/ClsFormatacao"
+import ComboBox from "../components/ComboBox"
 
 export default function CrudProva() {
   const clsFormatacao: ClsFormatacao = new ClsFormatacao()
@@ -275,6 +276,191 @@ export default function CrudProva() {
                     type="datetime-local"
                     erros={erros}
                     disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={9} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Endereço"
+                    tipo="text"
+                    dados={rsDados}
+                    field="endereco"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={100}
+                  />
+                </Grid>
+
+                <Grid item xs={9} md={3} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Bairro"
+                    tipo="text"
+                    dados={rsDados}
+                    field="bairro"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={60}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={5} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Cidade"
+                    tipo="text"
+                    dados={rsDados}
+                    field="cidade"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={60}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={2} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="UF"
+                    tipo="text"
+                    dados={rsDados}
+                    field="uf"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={2}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={3} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Valor da Prova"
+                    dados={rsDados}
+                    tipo="currency"
+                    field="valorProva"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={3} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Valor da Prova até 12(anos)"
+                    tipo="currency"
+                    type="currency"
+                    dados={rsDados}
+                    field="valorProvaAte12"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={3} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Telefone"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="telefone"
+                    erros={erros}
+                    type="tel"
+                    mask="tel"
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={3} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="WhatsApp"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="whatsapp"
+                    erros={erros}
+                    type="tel"
+                    mask="tel"
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="E-mail"
+                    setState={setRsDados}
+                    dados={rsDados}
+                    field="email"
+                    erros={erros}
+                    type="email"
+                    tipo="text"
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={4} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <ComboBox
+                    opcoes={[
+                      { piso: "Areia", valor: "A" },
+                      { piso: "Grama", valor: "G" },
+                      { piso: "Grama_sintetica", valor: "GS" },
+                    ]}
+                    campoDescricao="piso"
+                    campoID="valor"
+                    dados={rsDados}
+                    mensagemPadraoCampoEmBranco="Escolha um piso"
+                    field="tipoPiso"
+                    label="Piso"
+                    erros={erros}
+                    setState={setRsDados}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={4} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <ComboBox
+                    opcoes={[
+                      {
+                        prova: "Recebendo Inscrições",
+                        valor: "Recebendo Inscrições",
+                      },
+                      {
+                        prova: "Inscrições Encerradas",
+                        valor: "Inscrições Encerradas",
+                      },
+                      { prova: "Em Andamento", valor: "Em Andamento" },
+                      { prova: "Concluída", valor: "Concluída" },
+                    ]}
+                    campoDescricao="prova"
+                    campoID="prova"
+                    dados={rsDados}
+                    mensagemPadraoCampoEmBranco="Escolha um status"
+                    field="status"
+                    label="Status"
+                    erros={erros}
+                    setState={setRsDados}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Latitude"
+                    tipo="text"
+                    dados={rsDados}
+                    field="lat"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={10}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6} sx={{ mt: 2, pl: { md: 1 } }}>
+                  <InputFormat
+                    label="Longitude"
+                    tipo="text"
+                    dados={rsDados}
+                    field="long"
+                    setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR}
+                    erros={erros}
+                    maxLength={10}
                   />
                 </Grid>
 

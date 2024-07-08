@@ -1,6 +1,6 @@
 import { Column, Entity, Generated, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Inscricao from './Inscricao';
-import { SumulaTypes } from '../types/SumulaTypes';
+import { SumulaType } from '../types/SumulaTypes';
 
 @Entity({ name: 'sumulas' })
 export default class Sumula {
@@ -26,6 +26,6 @@ export default class Sumula {
   @Column({ type: 'int' })
   ordemEntrada: number
 
-  @Column({ type: 'enum', enum: SumulaTypes })
-  statusSumula: SumulaTypes
+  @Column({ type: 'enum', enum: SumulaType })
+  statusSumula: SumulaType
 }

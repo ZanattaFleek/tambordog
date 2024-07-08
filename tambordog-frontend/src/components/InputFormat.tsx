@@ -178,7 +178,6 @@ const CurrencyMaskCustom = forwardRef((props: any, ref: any) => {
       {...other}
       mask={Number}
       scale={scale ? scale : 2}
-      signed={true}
       padFractionalZeros={true}
       normalizeZeros={true}
       onAccept={(value: any) =>
@@ -351,13 +350,14 @@ export default function InputText({
                 tipo === "number" ||
                 tipo === "float" ||
                 tipo === "currency"
-              ) {
+              ) {                
                 novoValor =
                   tipo === "number"
                     ? parseInt(e.target.value)
                     : parseFloat(e.target.value)
 
                 if (isNaN(novoValor)) novoValor = 0
+                
               } else {
                 novoValor =
                   tipo === "uppercase"

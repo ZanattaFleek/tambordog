@@ -7,7 +7,7 @@ import {
   // OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { PisoTypes } from "../types/PisoTypes";
+import { PisoType } from "../types/PisoTypes";
 // import Inscricao from "./Inscricao";
 import Campeonato from "./Campeonato";
 import { ProvaInterface } from "../interfaces/prova.interfaces";
@@ -44,7 +44,7 @@ export default class Prova implements ProvaInterface {
   long: string;
 
   @Column({ type: "varchar", length: 2 })
-  tipoPiso: PisoTypes;
+  tipoPiso: PisoType;
 
   @Column({ type: "datetime" })
   dataHoraProva: string;
