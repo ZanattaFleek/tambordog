@@ -8,6 +8,7 @@ import CrudRaca from "../crud/CrudRaca"
 import CrudCategoria from "../crud/CrudCategoria"
 import CrudCampeonato from "../crud/CrudCampeonato"
 import CrudProva from "../crud/CrudProva"
+import Teste from "../testes/teste"
 
 export const RotasAPP = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const RotasAPP = createBrowserRouter([
       {
         path: "/CadastroUsuario",
         element: <CadastroUsuario />,
+      },
+      {
+        path: "/Teste",
+        element: <Teste />,
       },
     ],
   },

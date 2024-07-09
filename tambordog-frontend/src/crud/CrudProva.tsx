@@ -19,8 +19,8 @@ import {
   ContextoGlobalInterface,
 } from "../globalstate/ContextoGlobal"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
-import { PisoTypes } from "../backendImports/types/PisoTypes"
-import { StatusProvaType } from "../backendImports/types/ProvaTypes"
+import { PisoType, PisoTypes } from "../backendImports/types/PisoTypes"
+import { StatusProvaType, StatusProvaTypes } from "../backendImports/types/ProvaTypes"
 import ClsFormatacao from "../utils/ClsFormatacao"
 import ComboBox from "../components/ComboBox"
 
@@ -49,7 +49,7 @@ export default function CrudProva() {
     cep: "",
     lat: "",
     long: "",
-    tipoPiso: PisoTypes.areia,
+    tipoPiso: PisoType.grama,
     dataHoraProva: "",
     valorProva: 0,
     valorProvaAte12: 0,
@@ -397,13 +397,9 @@ export default function CrudProva() {
 
                 <Grid item xs={12} md={4} sx={{ mt: 2, pl: { md: 1 } }}>
                   <ComboBox
-                    opcoes={[
-                      { piso: "Areia", valor: "A" },
-                      { piso: "Grama", valor: "G" },
-                      { piso: "Grama_sintetica", valor: "GS" },
-                    ]}
-                    campoDescricao="piso"
-                    campoID="valor"
+                    opcoes={PisoTypes}
+                    campoDescricao="descricao"
+                    campoID="idTipoPiso"
                     dados={rsDados}
                     mensagemPadraoCampoEmBranco="Escolha um piso"
                     field="tipoPiso"
@@ -415,20 +411,9 @@ export default function CrudProva() {
 
                 <Grid item xs={12} md={4} sx={{ mt: 2, pl: { md: 1 } }}>
                   <ComboBox
-                    opcoes={[
-                      {
-                        prova: "Recebendo Inscrições",
-                        valor: "Recebendo Inscrições",
-                      },
-                      {
-                        prova: "Inscrições Encerradas",
-                        valor: "Inscrições Encerradas",
-                      },
-                      { prova: "Em Andamento", valor: "Em Andamento" },
-                      { prova: "Concluída", valor: "Concluída" },
-                    ]}
-                    campoDescricao="prova"
-                    campoID="prova"
+                    opcoes={StatusProvaTypes}
+                    campoDescricao="descricao"
+                    campoID="idStatusProva"
                     dados={rsDados}
                     mensagemPadraoCampoEmBranco="Escolha um status"
                     field="status"
