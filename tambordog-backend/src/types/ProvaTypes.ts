@@ -3,7 +3,8 @@ export enum StatusProvaType {
   inscEncerrada = "IE",
   emAndamento = "EA",
   concluida = "CL",
-  cancelada = "CC"
+  cancelada = "CC",
+  suspensa = "SS",
 }
 
 export const StatusProvaTypes = [
@@ -26,5 +27,9 @@ export const StatusProvaTypes = [
   {
     idStatusProva: StatusProvaType.cancelada,
     descricao: "Cancelada",
+  },
+  {
+    idStatusProva: StatusProvaType.suspensa,
+    descricao: "Suspensa",
   },
 ];

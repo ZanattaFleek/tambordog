@@ -13,8 +13,6 @@ import {
   ContextoGlobalInterface,
 } from "../globalstate/ContextoGlobal"
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar)
-
 export default function TopBar() {
   const { layoutState, setLayoutState } = useContext(
     ContextoGlobal
@@ -88,7 +86,6 @@ export default function TopBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Offset />
     </>
   )
 }

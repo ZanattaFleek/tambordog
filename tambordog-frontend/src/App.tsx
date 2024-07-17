@@ -59,7 +59,10 @@ function App() {
 
           <Condicional condicao={usuarioState.logado}>
             <TopBar />
+            <Offset />
           </Condicional>
+
+          <p>{process.env.REACT_APP_ENDERECO_BACKEND}</p>
 
           <Condicional
             condicao={
@@ -67,6 +70,7 @@ function App() {
             }
           >
             <Outlet />
+            <Offset />
           </Condicional>
 
           <Condicional condicao={usuarioState.logado}>

@@ -14,6 +14,17 @@ export interface PropsInterface extends PadraoCrudInterface {
   >
 }
 
+const URL_BACKEND: string = (
+  process.env.REACT_APP_BACKEND_PROTOCOLO as string
+).concat(
+  "://",
+  process.env.REACT_APP_BACKEND_ENDERECO as string,
+  ":",
+  process.env.REACT_APP_BACKEND_PORTA as string
+)
+
+console.log(URL_BACKEND)
+
 export default class ClsCrud {
   public consultar({
     entidade,
@@ -49,7 +60,7 @@ export default class ClsCrud {
 
     return axios
       .post<RespostaPadraoInterface<Array<any>>>(
-        "http://localhost:4000/consultar",
+        URL_BACKEND.concat("/consultar"),
         dados,
         config
       )
@@ -107,7 +118,7 @@ export default class ClsCrud {
 
     return axios
       .post<RespostaPadraoInterface<Array<any>>>(
-        "http://localhost:4000/incluir",
+        URL_BACKEND.concat("/incluir"),
         dados,
         config
       )
@@ -170,7 +181,7 @@ export default class ClsCrud {
 
     return axios
       .delete<RespostaPadraoInterface<Array<any>>>(
-        "http://localhost:4000/excluir",
+        URL_BACKEND.concat("/excluir"),
         config
       )
       .then((rs) => {
