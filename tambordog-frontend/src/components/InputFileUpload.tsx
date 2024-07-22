@@ -53,7 +53,7 @@ export default function InputFileUpload({
       ) {
         setErroTamanho(
           "Tamanho excede o limite de ".concat(
-            (tamanhoMaximoMBytesArquivo).toString(),
+            tamanhoMaximoMBytesArquivo.toString(),
             "MB"
           )
         )
@@ -72,7 +72,7 @@ export default function InputFileUpload({
           }
         }
 
-        reader.readAsText(rs.target.files[0], "base64")
+        reader.readAsDataURL(rs.target.files[0])
       }
     }
   }

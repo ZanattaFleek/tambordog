@@ -513,10 +513,11 @@ export default function CrudProva() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <img
-                    src={"data:image/png;base64,".concat(rsDados.imagem)}
-                    alt="Red dot"
-                  />
+                  <img src={rsDados.imagem} alt="Prova TamborDog" />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <iframe src={rsDados.termoAceite}></iframe>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3, textAlign: "right" }}>
