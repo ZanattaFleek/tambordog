@@ -81,23 +81,6 @@ const onKey = (
   }
 }
 
-const exibirIconePesquisa = () => {
-  return (
-    <InputAdornment position="start">
-      <IconButton
-        sx={{ margin: 0, padding: 0 }}
-        onClick={() => {
-          if (false) {
-            console.log("oi....")
-          }
-        }}
-      >
-        <Icon sx={{ margin: 10, padding: 10 }}>search</Icon>
-      </IconButton>
-    </InputAdornment>
-  )
-}
-
 export default function ComboBox<T>({
   id,
   label,
@@ -119,6 +102,21 @@ export default function ComboBox<T>({
   formatarOption = undefined,
   onClickPesquisa = undefined,
 }: ComboBoxInterface<T>) {
+  const exibirIconePesquisa = () => {
+    return (
+      <InputAdornment position="start">
+        <IconButton
+          sx={{ margin: 0, padding: 0 }}
+          onClick={() => {
+            if (onClickPesquisa) onClickPesquisa(pesquisa)
+          }}
+        >
+          <Icon sx={{ margin: 10, padding: 10 }}>search</Icon>
+        </IconButton>
+      </InputAdornment>
+    )
+  }
+
   const [pesquisa, setPesquisa] = useState("")
 
   const theme = useTheme()

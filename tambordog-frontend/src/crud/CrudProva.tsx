@@ -20,9 +20,14 @@ import {
 } from "../globalstate/ContextoGlobal"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 import { PisoType, PisoTypes } from "../backendImports/types/PisoTypes"
-import { StatusProvaType, StatusProvaTypes } from "../backendImports/types/ProvaTypes"
+import {
+  StatusProvaType,
+  StatusProvaTypes,
+} from "../backendImports/types/ProvaTypes"
 import ClsFormatacao from "../utils/ClsFormatacao"
 import ComboBox from "../components/ComboBox"
+import { CampeonatoInterface } from "../../../tambordog-backend/src/interfaces/campeonato.interfaces"
+import InputFileUpload from "../components/InputFileUpload"
 
 export default function CrudProva() {
   const clsFormatacao: ClsFormatacao = new ClsFormatacao()
@@ -38,6 +43,10 @@ export default function CrudProva() {
   })
 
   const [rsPesquisa, setRsPesquisa] = useState<Array<ProvaInterface>>([])
+
+  const [rsCampeonatos, setRsCampeonatos] = useState<
+    Array<CampeonatoInterface>
+  >([])
 
   const resetDados: ProvaInterface = {
     idCampeonato: null,
@@ -58,7 +67,7 @@ export default function CrudProva() {
     email: "",
     status: StatusProvaType.inscAberta,
     termoAceite: "",
-    foto: false,
+    imagem: "",
   }
 
   const [rsDados, setRsDados] = useState<ProvaInterface>(resetDados)
@@ -199,6 +208,24 @@ export default function CrudProva() {
   useEffect(() => {
     setLayoutState({ ...layoutState, titulo: "Cadastro de Provas" })
   }, [])
+
+  const pesquisarCampeonatos = (nome: string) => {
+    clsCrud
+      .consultar({
+        entidade: "Campeonato",
+        criterio: {
+          nome: "%".concat(nome, "%"),
+        },
+        camposLike: ["nome"],
+        select: ["idCampeonato", "nome"],
+        status: statusForm,
+        mensagem: "Pesquisando Campeonato",
+        setMensagemState: setMensagemState,
+      })
+      .then((rs: Array<CampeonatoInterface>) => {
+        setRsCampeonatos(rs)
+      })
+  }
 
   return (
     <>
@@ -449,6 +476,49 @@ export default function CrudProva() {
                   />
                 </Grid>
 
+                <Grid item xs={12}>
+                  <ComboBox
+                    campoID="idCampeonato"
+                    campoDescricao="nome"
+                    dados={rsDados}
+                    setState={setRsDados}
+                    field="idCampeonato"
+                    label="Campeonato"
+                    opcoes={rsCampeonatos}
+                    mensagemPadraoCampoEmBranco="Escolha o Campeonato"
+                    onClickPesquisa={(rs) => pesquisarCampeonatos(rs)}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFileUpload
+                    dados={rsDados}
+                    accept="application/pdf"
+                    field="termoAceite"
+                    setState={setRsDados}
+                    descricao={"Regulamento"}
+                    tamanhoMaximoMBytesArquivo={5}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputFileUpload
+                    accept="image/png"
+                    dados={rsDados}
+                    field="imagem"
+                    setState={setRsDados}
+                    descricao={"Imagem da Prova"}
+                    tamanhoMaximoMBytesArquivo={5}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <img
+                    src={"data:image/png;base64,".concat(rsDados.imagem)}
+                    alt="Red dot"
+                  />
+                </Grid>
+
                 <Grid item xs={12} sx={{ mt: 3, textAlign: "right" }}>
                   <Tooltip title="Cancelar">
                     <IconButton
@@ -504,9 +574,7 @@ export default function CrudProva() {
           </Paper>
         </Grid>
       </Grid>
-      {/*
-      <p>{JSON.stringify(rsDados)}</p>
-      */}
+      {<p>{JSON.stringify(rsDados)}</p>}
     </>
   )
 }

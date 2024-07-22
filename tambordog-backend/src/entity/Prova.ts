@@ -73,8 +73,8 @@ export default class Prova implements ProvaInterface {
   @Column({ length: 36, nullable: true })
   idCampeonato: string | null;
 
-  @Column({ default: false })
-  foto: boolean;
+  @Column({ type: "text" })
+  imagem: string;
 
   /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.prova)

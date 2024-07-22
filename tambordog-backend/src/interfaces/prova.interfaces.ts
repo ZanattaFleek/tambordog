@@ -21,7 +21,7 @@ export interface ProvaInterface {
   email: string;
   status: StatusProvaType;
   termoAceite: string;
-  foto: boolean;
+  imagem: string;
 }
 
 export interface ProvaCategoriaInterface {
