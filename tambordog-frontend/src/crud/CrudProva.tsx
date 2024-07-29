@@ -29,6 +29,8 @@ import ComboBox from "../components/ComboBox"
 import { CampeonatoInterface } from "../../../tambordog-backend/src/interfaces/campeonato.interfaces"
 import InputFileUpload from "../components/InputFileUpload"
 
+import CrudProvaCategoriaDetalhe from "./CrudProvaCategoriaDetalhe"
+
 export default function CrudProva() {
   const clsFormatacao: ClsFormatacao = new ClsFormatacao()
 
@@ -188,7 +190,6 @@ export default function CrudProva() {
 
   const onEditar = (id: string | number) => {
     pesquisaPorId(id).then((rs) => {
-      console.log("Campos Que retornaram: ", rs)
       setRsDados(rs)
       setStatusForm(StatusForm.ALTERAR)
     })
@@ -491,6 +492,10 @@ export default function CrudProva() {
                 </Grid>
 
                 <Grid item xs={12}>
+                  <CrudProvaCategoriaDetalhe />
+                </Grid>
+
+                <Grid item xs={12}>
                   <InputFileUpload
                     dados={rsDados}
                     accept="application/pdf"
@@ -512,13 +517,22 @@ export default function CrudProva() {
                   />
                 </Grid>
 
+                {/*
                 <Grid item xs={12}>
+                  <Condicional condicao={rsDados.imagem.length > 0}>
                   <img src={rsDados.imagem} alt="Prova TamborDog" />
+                  </Condicional>
                 </Grid>
 
                 <Grid item xs={12}>
-                  <iframe src={rsDados.termoAceite}></iframe>
+                  <object
+                    data={rsDados.termoAceite}
+                    type="application/pdf"
+                    width="100%"
+                    height="600px"
+                  ></object>
                 </Grid>
+                */}
 
                 <Grid item xs={12} sx={{ mt: 3, textAlign: "right" }}>
                   <Tooltip title="Cancelar">
@@ -575,7 +589,6 @@ export default function CrudProva() {
           </Paper>
         </Grid>
       </Grid>
-      {<p>{JSON.stringify(rsDados)}</p>}
     </>
   )
 }
