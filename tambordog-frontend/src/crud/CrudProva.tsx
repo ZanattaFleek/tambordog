@@ -30,6 +30,7 @@ import { CampeonatoInterface } from "../../../tambordog-backend/src/interfaces/c
 import InputFileUpload from "../components/InputFileUpload"
 
 import CrudProvaCategoriaDetalhe from "./CrudProvaCategoriaDetalhe"
+import { DateTime } from "luxon"
 
 export default function CrudProva() {
   const clsFormatacao: ClsFormatacao = new ClsFormatacao()
@@ -61,7 +62,7 @@ export default function CrudProva() {
     lat: "",
     long: "",
     tipoPiso: PisoType.grama,
-    dataHoraProva: "",
+    dataHoraProva: '',
     valorProva: 0,
     valorProvaAte12: 0,
     telefone: "",
@@ -70,6 +71,7 @@ export default function CrudProva() {
     status: StatusProvaType.inscAberta,
     termoAceite: "",
     imagem: "",
+    provaCategorias: []
   }
 
   const [rsDados, setRsDados] = useState<ProvaInterface>(resetDados)
@@ -134,6 +136,7 @@ export default function CrudProva() {
   }
 
   const btConfirmarInclusao = () => {
+
     if (validarDados()) {
       clsCrud
         .incluir({
@@ -149,6 +152,7 @@ export default function CrudProva() {
           }
         })
     }
+
   }
 
   const btConfirmarExclusao = () => {
@@ -171,6 +175,7 @@ export default function CrudProva() {
     return clsCrud
       .consultar({
         entidade: "Prova",
+        relations: ['provaCategorias', 'provaCategorias.Categoria'],
         criterio: {
           idProva: id,
         },
@@ -179,6 +184,7 @@ export default function CrudProva() {
         setMensagemState: setMensagemState,
       })
       .then((rs: Array<ProvaInterface>) => {
+        console.log('Retorno do Select: ', rs)
         return {
           ...rs[0],
           dataHoraProva: clsFormatacao.dataTimeZoneZtoLocalInput(
@@ -492,7 +498,10 @@ export default function CrudProva() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <CrudProvaCategoriaDetalhe />
+                  <CrudProvaCategoriaDetalhe
+                    rsDados={rsDados}
+                    setRsDados={setRsDados}
+                  />
                 </Grid>
 
                 <Grid item xs={12}>

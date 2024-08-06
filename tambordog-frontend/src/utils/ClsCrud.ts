@@ -23,7 +23,7 @@ const URL_BACKEND: string = (
   process.env.REACT_APP_BACKEND_PORTA as string
 )
 
-console.log(URL_BACKEND)
+// console.log(URL_BACKEND)
 
 export default class ClsCrud {
   public consultar({
@@ -33,13 +33,22 @@ export default class ClsCrud {
     select,
     setMensagemState,
     mensagem = "Pesquisando...",
+    relations
   }: PropsInterface): Promise<Array<any>> {
+
+    // console.clear()
+    console.log('relations:', relations)
+    console.log('entidade:', entidade)
+
     const dados: PadraoCrudInterface = {
       entidade: entidade,
       criterio: criterio,
       camposLike: camposLike,
       select: select,
+      relations: relations
     }
+
+    console.log('dados:', dados)
 
     const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,
@@ -135,7 +144,7 @@ export default class ClsCrud {
             titulo: "",
           })
         } else if (!rs.data.ok && setMensagemState) {
-          console.log(rs.data.mensagem)
+          // console.log(rs.data.mensagem)
           setMensagemState({
             botaoFechar: true,
             exibir: true,

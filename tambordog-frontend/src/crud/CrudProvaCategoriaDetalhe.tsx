@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { ProvaCategoriaInterface } from "../../../tambordog-backend/src/interfaces/prova.interfaces"
+import { ProvaCategoriaInterface, ProvaInterface } from "../../../tambordog-backend/src/interfaces/prova.interfaces"
 import DataTable, { DataTableCabecalhoInterface } from "../components/DataTable"
 import {
   Button,
@@ -31,10 +31,12 @@ import ComboBox from "../components/ComboBox"
 import InputText from "../components/InputFormat"
 import ClsValidacao from "../utils/ClsValidacao"
 
-export default function CrudProvaCategoriaDetalhe() {
-  const [rsProvaCategorias, setRsProvaCategorias] = useState<
-    Array<ProvaCategoriaInterface>
-  >([])
+interface PropsInterface {
+  rsDados: ProvaInterface
+  setRsDados: React.Dispatch<React.SetStateAction<ProvaInterface>>
+}
+
+export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: PropsInterface) {
 
   const ResetDados: ProvaCategoriaInterface = {
     idCategoria: "",
@@ -59,6 +61,7 @@ export default function CrudProvaCategoriaDetalhe() {
       cabecalho: "Categoria",
       alinhamento: "left",
       campo: "idCategoria",
+      format: (_v, rs: any) => rs.Categoria.nome
     },
     {
       cabecalho: "Pistas",
@@ -123,8 +126,9 @@ export default function CrudProvaCategoriaDetalhe() {
     return retorno
   }
 
-  const podeIncluirCategoria = () => {
-    const indice = rsProvaCategorias.findIndex(
+  const podeIncluirCategoria = (): boolean => {
+
+    const indice = rsDados.provaCategorias.findIndex(
       (v) => v.idCategoria === dados.idCategoria
     )
 
@@ -143,14 +147,19 @@ export default function CrudProvaCategoriaDetalhe() {
 
   const btConfirmarInclusao = () => {
     if (validarDados() && podeIncluirCategoria()) {
-      setRsProvaCategorias([
-        ...rsProvaCategorias,
-        {
-          idCategoria: dados.idCategoria,
-          idProva: dados.idProva,
-          qtdPistas: dados.qtdPistas,
-        },
-      ])
+
+      setRsDados({
+        ...rsDados, provaCategorias:
+          [
+            ...rsDados.provaCategorias,
+            {
+              idCategoria: dados.idCategoria,
+              idProva: dados.idProva,
+              qtdPistas: dados.qtdPistas,
+            }
+          ]
+      })
+
       setOpen(false)
     }
   }
@@ -243,23 +252,23 @@ export default function CrudProvaCategoriaDetalhe() {
         <Grid item xs={12} sx={{ mt: 1 }}>
           <DataTable
             cabecalho={cabecalho}
-            dados={rsProvaCategorias}
-            /*
-          acoes={[
-            {
-              icone: "edit",
-              onAcionador: (rs: ProvaInterface) =>
-              onEditar(rs.idProva as string),
-              toolTip: "Editar",
+            dados={rsDados.provaCategorias}
+          /*
+        acoes={[
+          {
+            icone: "edit",
+            onAcionador: (rs: ProvaInterface) =>
+            onEditar(rs.idProva as string),
+            toolTip: "Editar",
+          },
+          {
+            icone: "delete",
+            onAcionador: (rs: ProvaInterface) =>
+            onExcluir(rs.idProva as string),
+            toolTip: "Excluir",
             },
-            {
-              icone: "delete",
-              onAcionador: (rs: ProvaInterface) =>
-              onExcluir(rs.idProva as string),
-              toolTip: "Excluir",
-              },
-              ]}
-              */
+            ]}
+            */
           />
         </Grid>
       </Grid>

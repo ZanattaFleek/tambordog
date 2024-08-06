@@ -22,11 +22,12 @@ export interface ProvaInterface {
   status: StatusProvaType;
   termoAceite: string;
   imagem: string;
+  provaCategorias: Array<ProvaCategoriaInterface>
 }
 
 export interface ProvaCategoriaInterface {
   idProvaCategoria?: string;
-  idProva: string;
+  idProva: string | null;
   idCategoria: string;
-  qtdPistas: number;
+  qtdPistas: number;  
 }

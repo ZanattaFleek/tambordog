@@ -11,6 +11,7 @@ export default class ClsCategoriaController {
     criterio,
     camposLike,
     select,
+    relations = []
   }: PadraoCrudInterface): Promise<RespostaPadraoInterface<any>> {
     let where: Record<string, any> = {};
 
@@ -22,8 +23,10 @@ export default class ClsCategoriaController {
 
     AppDataSource.getRepository(entidade);
 
+    console.log('relations',relations)
+
     return AppDataSource.getRepository(entidade)
-      .find({ where: where, select: select })
+      .find({ where: where, select: select, relations: relations })
       .then((rs) => {
         return {
           ok: true,

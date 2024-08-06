@@ -4,14 +4,18 @@ import {
   Generated,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   // OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PisoType } from "../types/PisoTypes";
 // import Inscricao from "./Inscricao";
 import Campeonato from "./Campeonato";
-import { ProvaInterface } from "../interfaces/prova.interfaces";
+import { ProvaCategoriaInterface, ProvaInterface } from "../interfaces/prova.interfaces";
 import { StatusProvaType } from "../types/ProvaTypes";
+import { CategoriaInterface } from "../interfaces/categoria.interfaces";
+import Categoria from "./Categoria";
+import ProvaCategoria from "./ProvaCategoria";
 
 @Entity({ name: "provas" })
 export default class Prova implements ProvaInterface {
@@ -79,9 +83,13 @@ export default class Prova implements ProvaInterface {
   /*
   @OneToMany(() => Inscricao, (inscricao) => inscricao.prova)
   Inscricoes: Inscricao[];
-*/
+  */
 
   @JoinColumn({ name: "idCampeonato" })
   @ManyToOne(() => Campeonato, (campeonato) => campeonato.Provas)
   Campeonato: Campeonato;
+
+  @JoinColumn({ name: "idProva" })
+  @OneToMany(() => ProvaCategoria, (provaCategoria) => provaCategoria.prova, { cascade: true, eager: true })
+  provaCategorias: Array<ProvaCategoriaInterface>
 }
