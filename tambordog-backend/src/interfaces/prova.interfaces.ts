@@ -1,5 +1,6 @@
 import { PisoType } from "../types/PisoTypes";
 import { StatusProvaType } from "../types/ProvaTypes";
+import { CategoriaInterface } from "./categoria.interfaces";
 
 export interface ProvaInterface {
   idProva?: string;
@@ -30,4 +31,5 @@ export interface ProvaCategoriaInterface {
   idProva: string | null;
   idCategoria: string;
   qtdPistas: number;  
+  Categoria: CategoriaInterface
 }

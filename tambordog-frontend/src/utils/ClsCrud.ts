@@ -37,8 +37,8 @@ export default class ClsCrud {
   }: PropsInterface): Promise<Array<any>> {
 
     // console.clear()
-    console.log('relations:', relations)
-    console.log('entidade:', entidade)
+    // console.log('relations:', relations)
+    // console.log('entidade:', entidade)
 
     const dados: PadraoCrudInterface = {
       entidade: entidade,
@@ -48,7 +48,7 @@ export default class ClsCrud {
       relations: relations
     }
 
-    console.log('dados:', dados)
+    // console.log('dados:', dados)
 
     const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,

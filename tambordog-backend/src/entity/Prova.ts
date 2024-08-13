@@ -90,6 +90,6 @@ export default class Prova implements ProvaInterface {
   Campeonato: Campeonato;
 
   @JoinColumn({ name: "idProva" })
-  @OneToMany(() => ProvaCategoria, (provaCategoria) => provaCategoria.prova, { cascade: true, eager: true })
+  @OneToMany(() => ProvaCategoria, (provaCategoria) => provaCategoria.prova, { cascade: true })
   provaCategorias: Array<ProvaCategoriaInterface>
 }

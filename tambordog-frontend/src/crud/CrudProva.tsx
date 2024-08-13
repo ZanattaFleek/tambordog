@@ -184,7 +184,7 @@ export default function CrudProva() {
         setMensagemState: setMensagemState,
       })
       .then((rs: Array<ProvaInterface>) => {
-        console.log('Retorno do Select: ', rs)
+        // console.log('Retorno do Select: ', rs)
         return {
           ...rs[0],
           dataHoraProva: clsFormatacao.dataTimeZoneZtoLocalInput(

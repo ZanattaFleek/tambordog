@@ -30,6 +30,7 @@ import { CategoriaInterface } from "../../../tambordog-backend/src/interfaces/ca
 import ComboBox from "../components/ComboBox"
 import InputText from "../components/InputFormat"
 import ClsValidacao from "../utils/ClsValidacao"
+import Condicional from "../components/Condicional"
 
 interface PropsInterface {
   rsDados: ProvaInterface
@@ -42,11 +43,14 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
     idCategoria: "",
     idProva: "",
     qtdPistas: 1,
+    Categoria: { nome: '', observacao: '' }
   }
 
   const [open, setOpen] = useState<boolean>(false)
 
   const [dados, setDados] = useState<ProvaCategoriaInterface>(ResetDados)
+
+  const [indiceEdicao, setIndiceEdicao] = useState<number>(-1)
 
   const [rsCategorias, setRsCategorias] = useState<Array<CategoriaInterface>>(
     []
@@ -76,7 +80,9 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
 
   const btIncluirCategoria = () => {
     setOpen(true)
-    console.log("btIncluirCategoria")
+    setStatusForm(StatusForm.INCLUIR)
+    setIndiceEdicao(-1)
+    // console.log("btIncluirCategoria")
   }
 
   const pesquisarCategorias = () => {
@@ -129,7 +135,7 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
   const podeIncluirCategoria = (): boolean => {
 
     const indice = rsDados.provaCategorias.findIndex(
-      (v) => v.idCategoria === dados.idCategoria
+      (v, i) => v.idCategoria === dados.idCategoria && i !== indiceEdicao
     )
 
     if (indice >= 0) {
@@ -145,6 +151,22 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
     return indice < 0
   }
 
+  const btConfirmarAlteracao = () => {
+    if (validarDados() && podeIncluirCategoria()) {
+
+      let tmpProvasCategorias: Array<ProvaCategoriaInterface> = [...rsDados.provaCategorias]
+
+      tmpProvasCategorias[indiceEdicao] = { ...dados, Categoria: { ...rsCategorias[rsCategorias.findIndex(v => v.idCategoria === dados.idCategoria)] } }
+
+      setRsDados({ ...rsDados, provaCategorias: [...tmpProvasCategorias] })
+
+      setStatusForm(StatusForm.PESQUISAR)
+      setDados(ResetDados)
+      setOpen(false)
+
+    }
+  }
+
   const btConfirmarInclusao = () => {
     if (validarDados() && podeIncluirCategoria()) {
 
@@ -156,6 +178,8 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
               idCategoria: dados.idCategoria,
               idProva: dados.idProva,
               qtdPistas: dados.qtdPistas,
+              Categoria: { ...rsCategorias[rsCategorias.findIndex(v => v.idCategoria === dados.idCategoria)] }
+              // Categoria: { ...rsCategorias.find(v => v.idCategoria === dados.idCategoria) as CategoriaInterface }
             }
           ]
       })
@@ -166,6 +190,27 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
 
   const btFechar = () => {
     setOpen(false)
+  }
+
+  const onEditar = (rs: ProvaCategoriaInterface, indice: number) => {
+    setStatusForm(StatusForm.ALTERAR)
+    setIndiceEdicao(indice)
+    setDados(rs)
+    setOpen(true)
+  }
+
+  const onExcluir = (rs: ProvaCategoriaInterface) => {
+
+    let tmpCategorias: Array<ProvaCategoriaInterface> = []
+
+    rsDados.provaCategorias.forEach(rsProvaCategoria => {
+      if (rsProvaCategoria.idCategoria !== rs.idCategoria) {
+        tmpCategorias.push(rsProvaCategoria)
+      }
+    })
+
+    setRsDados({ ...rsDados, provaCategorias: tmpCategorias })
+
   }
 
   return (
@@ -217,23 +262,44 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
             </Grid>
 
             <Grid item xs={12}>
-              <Tooltip
-                title={"Confirmar ".concat(
-                  statusForm === StatusForm.INCLUIR ? "inclusão" : "alteração"
-                )}
-              >
-                <IconButton
-                  color="secondary"
-                  size="large"
-                  sx={{ ml: 2 }}
-                  onClick={() => btConfirmarInclusao()}
+              <Condicional condicao={statusForm === StatusForm.INCLUIR}>
+                <Tooltip
+                  title={"Confirmar Inclusão"}
                 >
-                  <CheckCircleRoundedIcon sx={{ fontSize: 35 }} />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    color="secondary"
+                    size="large"
+                    sx={{ ml: 2 }}
+                    onClick={() => btConfirmarInclusao()}
+                  >
+                    <CheckCircleRoundedIcon sx={{ fontSize: 35 }} />
+                  </IconButton>
+                </Tooltip>
+              </Condicional>
+
+              <Condicional condicao={statusForm === StatusForm.ALTERAR}>
+                <Tooltip
+                  title={"Confirmar Alteração"}
+                >
+                  <IconButton
+                    color="secondary"
+                    size="large"
+                    sx={{ ml: 2 }}
+                    onClick={() => btConfirmarAlteracao()}
+                  >
+                    <CheckCircleRoundedIcon sx={{ fontSize: 35 }} />
+                  </IconButton>
+                </Tooltip>
+              </Condicional>
             </Grid>
           </Grid>
         </Paper>
+
+        <p>
+          {JSON.stringify(dados)}
+        </p>
+
+
       </Dialog>
 
       <Grid container justifyContent="center" sx={{ mt: -3 }}>
@@ -253,22 +319,21 @@ export default function CrudProvaCategoriaDetalhe({ rsDados, setRsDados }: Props
           <DataTable
             cabecalho={cabecalho}
             dados={rsDados.provaCategorias}
-          /*
-        acoes={[
-          {
-            icone: "edit",
-            onAcionador: (rs: ProvaInterface) =>
-            onEditar(rs.idProva as string),
-            toolTip: "Editar",
-          },
-          {
-            icone: "delete",
-            onAcionador: (rs: ProvaInterface) =>
-            onExcluir(rs.idProva as string),
-            toolTip: "Excluir",
-            },
+            acoes={[
+              {
+                icone: "edit",
+                onAcionador: (rs: ProvaCategoriaInterface, indice: number) =>
+                  onEditar(rs, indice),
+                toolTip: "Editar",
+              },
+              {
+                icone: "delete",
+                onAcionador: (rs: ProvaCategoriaInterface) =>
+                  onExcluir(rs),
+                toolTip: "Excluir",
+              },
             ]}
-            */
+
           />
         </Grid>
       </Grid>
