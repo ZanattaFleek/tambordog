@@ -201,7 +201,7 @@ export default function CrudAtleta() {
 
   const pesquisaPorId = (id: string | number): Promise<AtletaInterface> => {
     return clsCrud
-      .consultar({
+      .consultar({        
         entidade: "Atleta",
         criterio: {
           idAtleta: id,

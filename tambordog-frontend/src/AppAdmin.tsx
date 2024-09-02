@@ -17,7 +17,7 @@ import { styled } from "@mui/material/styles"
 import { useMensagemState } from "./globalstate/MensagemState"
 import Mensagem from "./components/Mensagem"
 
-function App() {
+export default function AppAdmin() {
   const chkRotaLivre = () => {
     const urlAtual: string = window.location.href
 
@@ -86,4 +86,4 @@ function App() {
   )
 }
 
-export default App
+

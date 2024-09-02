@@ -30,7 +30,6 @@ import { CampeonatoInterface } from "../../../tambordog-backend/src/interfaces/c
 import InputFileUpload from "../components/InputFileUpload"
 
 import CrudProvaCategoriaDetalhe from "./CrudProvaCategoriaDetalhe"
-import { DateTime } from "luxon"
 
 export default function CrudProva() {
   const clsFormatacao: ClsFormatacao = new ClsFormatacao()
@@ -75,6 +74,7 @@ export default function CrudProva() {
   }
 
   const [rsDados, setRsDados] = useState<ProvaInterface>(resetDados)
+  const [alteracaoStatus, setAlteracaoStatus] = useState<boolean>(false)
 
   const { mensagemState, setMensagemState } = useContext(
     ContextoGlobal
@@ -86,17 +86,31 @@ export default function CrudProva() {
       alinhamento: "left",
       campo: "nomeProva",
     },
+    {
+      cabecalho: "Campeonato",
+      alinhamento: "left",
+      campo: "Campeonato",
+      format: (rs) => rs ? rs.nome : ''
+    },
+    {
+      cabecalho: "Status",
+      alinhamento: "left",
+      campo: "status",
+      format: (rsStatus) => StatusProvaTypes.find(rs => rs.idStatusProva === rsStatus)?.descricao
+    },
   ]
 
   const btPesquisar = () => {
     clsCrud
       .consultar({
         entidade: "Prova",
+        // relations: ['provaCategorias', 'provaCategorias.Categoria'],
+        relations: ['Campeonato'],
         criterio: {
           nomeProva: "%".concat(pesquisa.descricao).concat("%"),
         },
         camposLike: ["nomeProva"],
-        select: ["idProva", "nomeProva"],
+        select: ["idProva", "nomeProva", "status"],
         status: statusForm,
         mensagem: "Pesquisando provas...",
         setMensagemState: setMensagemState,
@@ -115,6 +129,7 @@ export default function CrudProva() {
     setErros({})
     setRsDados(resetDados)
     setStatusForm(StatusForm.PESQUISAR)
+    setAlteracaoStatus(false)
   }
 
   const validarDados = (): boolean => {
@@ -138,6 +153,7 @@ export default function CrudProva() {
   const btConfirmarInclusao = () => {
 
     if (validarDados()) {
+      setAlteracaoStatus(false)
       clsCrud
         .incluir({
           entidade: "Prova",
@@ -197,6 +213,14 @@ export default function CrudProva() {
   const onEditar = (id: string | number) => {
     pesquisaPorId(id).then((rs) => {
       setRsDados(rs)
+      setStatusForm(StatusForm.ALTERAR)
+    })
+  }
+
+  const onEditarStatus = (id: string | number) => {
+    pesquisaPorId(id).then((rs) => {
+      setRsDados(rs)
+      setAlteracaoStatus(true)
       setStatusForm(StatusForm.ALTERAR)
     })
   }
@@ -283,6 +307,12 @@ export default function CrudProva() {
                           onExcluir(rs.idProva as string),
                         toolTip: "Excluir",
                       },
+                      {
+                        icone: "swap_horiz",
+                        onAcionador: (rs: ProvaInterface) =>
+                          onEditarStatus(rs.idProva as string),
+                        toolTip: "Editar",
+                      }
                     ]}
                   />
                 </Grid>
@@ -297,7 +327,7 @@ export default function CrudProva() {
                     field="nomeProva"
                     maxLength={35}
                     erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -309,7 +339,7 @@ export default function CrudProva() {
                     field="dataHoraProva"
                     type="datetime-local"
                     erros={erros}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -320,7 +350,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="endereco"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={100}
                   />
@@ -333,7 +363,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="bairro"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={60}
                   />
@@ -346,7 +376,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="cidade"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={60}
                   />
@@ -359,7 +389,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="uf"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={2}
                   />
@@ -372,7 +402,7 @@ export default function CrudProva() {
                     tipo="currency"
                     field="valorProva"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                   />
                 </Grid>
@@ -385,7 +415,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="valorProvaAte12"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                   />
                 </Grid>
@@ -399,7 +429,7 @@ export default function CrudProva() {
                     erros={erros}
                     type="tel"
                     mask="tel"
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -412,7 +442,7 @@ export default function CrudProva() {
                     erros={erros}
                     type="tel"
                     mask="tel"
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -425,7 +455,7 @@ export default function CrudProva() {
                     erros={erros}
                     type="email"
                     tipo="text"
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -440,6 +470,7 @@ export default function CrudProva() {
                     label="Piso"
                     erros={erros}
                     setState={setRsDados}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
@@ -464,7 +495,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="lat"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={10}
                   />
@@ -477,7 +508,7 @@ export default function CrudProva() {
                     dados={rsDados}
                     field="long"
                     setState={setRsDados}
-                    disabled={statusForm === StatusForm.EXCLUIR}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                     erros={erros}
                     maxLength={10}
                   />
@@ -494,37 +525,41 @@ export default function CrudProva() {
                     opcoes={rsCampeonatos}
                     mensagemPadraoCampoEmBranco="Escolha o Campeonato"
                     onClickPesquisa={(rs) => pesquisarCampeonatos(rs)}
+                    disabled={statusForm === StatusForm.EXCLUIR || alteracaoStatus}
                   />
                 </Grid>
 
-                <Grid item xs={12}>
-                  <CrudProvaCategoriaDetalhe
-                    rsDados={rsDados}
-                    setRsDados={setRsDados}
-                  />
-                </Grid>
+                <Condicional condicao={statusForm !== StatusForm.EXCLUIR && !alteracaoStatus}>
 
-                <Grid item xs={12}>
-                  <InputFileUpload
-                    dados={rsDados}
-                    accept="application/pdf"
-                    field="termoAceite"
-                    setState={setRsDados}
-                    descricao={"Regulamento"}
-                    tamanhoMaximoMBytesArquivo={5}
-                  />
-                </Grid>
+                  <Grid item xs={12}>
+                    <CrudProvaCategoriaDetalhe
+                      rsDados={rsDados}
+                      setRsDados={setRsDados}
+                    />
+                  </Grid>
 
-                <Grid item xs={12}>
-                  <InputFileUpload
-                    accept="image/png"
-                    dados={rsDados}
-                    field="imagem"
-                    setState={setRsDados}
-                    descricao={"Imagem da Prova"}
-                    tamanhoMaximoMBytesArquivo={5}
-                  />
-                </Grid>
+                  <Grid item xs={12}>
+                    <InputFileUpload
+                      dados={rsDados}
+                      accept="application/pdf"
+                      field="termoAceite"
+                      setState={setRsDados}
+                      descricao={"Regulamento"}
+                      tamanhoMaximoMBytesArquivo={5}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <InputFileUpload
+                      accept="image/png"
+                      dados={rsDados}
+                      field="imagem"
+                      setState={setRsDados}
+                      descricao={"Imagem da Prova"}
+                      tamanhoMaximoMBytesArquivo={5}
+                    />
+                  </Grid>
+                </Condicional>
 
                 {/*
                 <Grid item xs={12}>

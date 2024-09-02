@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
 import EventosEmAberto from "../eventos/EventosEmAberto"
-import App from "../App"
+import AppAdmin from "../AppAdmin"
 import Login from "../login/Login"
 import CrudAtleta from "../crud/CrudAtleta"
 import CadastroUsuario from "../app/CadastroUsuario"
@@ -9,46 +9,53 @@ import CrudCategoria from "../crud/CrudCategoria"
 import CrudCampeonato from "../crud/CrudCampeonato"
 import CrudProva from "../crud/CrudProva"
 import Teste from "../testes/teste"
+import AppUsuario from "../AppUsuario"
 
 export const RotasAPP = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <AppUsuario />,
     children: [
       {
         path: "/Login",
         element: <Login />,
-      },
+      }
+    ]
+  },
+  {
+    path: "/admin",
+    element: <AppAdmin />,
+    children: [
       {
-        path: "/CrudAtleta",
+        path: "/admin/CrudAtleta",
         element: <CrudAtleta />,
       },
       {
-        path: "/CrudRaca",
+        path: "/admin/CrudRaca",
         element: <CrudRaca />,
       },
       {
-        path: "/CrudCategoria",
+        path: "/admin/CrudCategoria",
         element: <CrudCategoria />,
       },
       {
-        path: "/CrudCampeonato",
+        path: "/admin/CrudCampeonato",
         element: <CrudCampeonato />,
       },
       {
-        path: "/CrudProva",
+        path: "/admin/CrudProva",
         element: <CrudProva />,
       },
       {
-        path: "/EventosEmAberto",
+        path: "/admin/EventosEmAberto",
         element: <EventosEmAberto />,
       },
       {
-        path: "/CadastroUsuario",
+        path: "/admin/CadastroUsuario",
         element: <CadastroUsuario />,
       },
       {
-        path: "/Teste",
+        path: "/admin/Teste",
         element: <Teste />,
       },
     ],

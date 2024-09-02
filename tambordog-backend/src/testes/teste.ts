@@ -8,7 +8,8 @@ import { StatusProvaType } from "../types/ProvaTypes";
 AppDataSource.initialize().then(() => {
 //     relations: ['Categoria'],
 AppDataSource.getRepository(Prova).find({
-  relations: ['provaCategorias', 'provaCategorias.Categoria'],
+  // relations: ['provaCategorias', 'provaCategorias.Categoria'],
+  relations: ['Campeonato'],
   where: {
     cidade: 'teste'
   }
