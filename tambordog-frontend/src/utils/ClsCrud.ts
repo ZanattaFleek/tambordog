@@ -5,6 +5,7 @@ import {
 import axios, { AxiosRequestConfig } from "axios"
 import { MensagemStateInterface } from "../globalstate/MensagemState"
 import { StatusForm } from "./ClsStatusForm"
+import { URL_BACKEND } from "../config/servidor"
 
 export interface PropsInterface extends PadraoCrudInterface {
   status: StatusForm
@@ -13,15 +14,6 @@ export interface PropsInterface extends PadraoCrudInterface {
     React.SetStateAction<MensagemStateInterface>
   >
 }
-
-const URL_BACKEND: string = (
-  process.env.REACT_APP_BACKEND_PROTOCOLO as string
-).concat(
-  "://",
-  process.env.REACT_APP_BACKEND_ENDERECO as string,
-  ":",
-  process.env.REACT_APP_BACKEND_PORTA as string
-)
 
 // console.log(URL_BACKEND)
 

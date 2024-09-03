@@ -1,3 +1,4 @@
+import { LessThan, LessThanOrEqual } from "typeorm";
 import { AppDataSource } from "../dataSource";
 import Prova from "../entity/Prova";
 import ProvaCategoria from "../entity/ProvaCategoria";
@@ -6,17 +7,17 @@ import { PisoType } from "../types/PisoTypes";
 import { StatusProvaType } from "../types/ProvaTypes";
 
 AppDataSource.initialize().then(() => {
-//     relations: ['Categoria'],
-AppDataSource.getRepository(Prova).find({
-  // relations: ['provaCategorias', 'provaCategorias.Categoria'],
-  relations: ['Campeonato'],
-  where: {
-    cidade: 'teste'
-  }
-}).then(rs => {
-  console.log(JSON.stringify(rs))
-})
-  
+  //     relations: ['Categoria'],
+  AppDataSource.getRepository(Prova).find({
+    // relations: ['provaCategorias', 'provaCategorias.Categoria'],
+    relations: ['Campeonato'],
+    where: {
+      valorProva: eval('<=10')
+    }
+  }).then(rs => {
+    console.log(JSON.stringify(rs))
+  })
+
 })
 
 // Data do Banco:

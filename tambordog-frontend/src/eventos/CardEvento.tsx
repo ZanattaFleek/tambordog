@@ -4,6 +4,10 @@ import Typography from "@mui/material/Typography"
 import { Avatar, AvatarGroup, Box, Button, Grid } from "@mui/material"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { useEffect } from "react"
+import ClsCrud from "../utils/ClsCrud"
+import ClsBackEnd from "../utils/ClsBackEnd"
+import { ProvaInterface } from "../../../tambordog-backend/src/interfaces/prova.interfaces"
 
 interface propsCardEvento {
   titulo: string

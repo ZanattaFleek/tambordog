@@ -20,18 +20,11 @@ import { red } from "@mui/material/colors"
 import CardEvento from "./eventos/CardEvento"
 
 import { CardMedia } from '@mui/material';
+import ClsBackEnd from "./utils/ClsBackEnd"
+import { ProvaInterface } from "../../tambordog-backend/src/interfaces/prova.interfaces"
 
 
 export default function AppUsuario() {
-  const chkRotaLivre = () => {
-    const urlAtual: string = window.location.href
-
-    const indice: number = ROTAS_LIVRES.findIndex((rsRota) => {
-      return urlAtual.includes(rsRota)
-    })
-
-    setRotaLivre(indice >= 0)
-  }
 
   const { usuarioState, setUsuarioState } = useUsuarioState()
 
@@ -40,6 +33,8 @@ export default function AppUsuario() {
   const { layoutState, setLayoutState } = useLayoutState()
 
   const [rotaLivre, setRotaLivre] = useState<boolean>(false)
+
+  const clsBackEnd = new ClsBackEnd()
 
   const ContextoGlobalDefault: ContextoGlobalInterface = {
     setUsuarioState: setUsuarioState,
@@ -50,11 +45,21 @@ export default function AppUsuario() {
     setMensagemState: setMensagemState,
   }
 
-  useEffect(() => {
-    chkRotaLivre()
-  })
-
   const Offset = styled("div")(({ theme }) => theme.mixins.toolbar)
+
+  const [rsProvas, setRsProvas] = useState<Array<ProvaInterface>>([])
+
+  const pesquisarEventos = () => {
+
+    clsBackEnd.execute<Array<ProvaInterface>>({ url: 'provasEmAberto', metodo: 'get' }).then((rs) => {
+      setRsProvas(rs)
+    })
+
+  }
+
+  useEffect(() => {
+    pesquisarEventos()
+  }, [])
 
   return (
     <>
@@ -151,38 +156,17 @@ export default function AppUsuario() {
             Próximas Provas
           </Typography>
 
-          <CardEvento
-            cidade="Divinópolis"
-            data="20/10/2021"
-            imagem="./imagens/logo.png"
-            qtdInscritos={3}
-            titulo="Circuito Tambor Dog"
-            uf="MG"
-          />
-          <CardEvento
-            cidade="Divinópolis"
-            data="20/10/2021"
-            imagem="./imagens/logo.png"
-            qtdInscritos={3}
-            titulo="Circuito Tambor Dog"
-            uf="MG"
-          />
-          <CardEvento
-            cidade="Divinópolis"
-            data="20/10/2021"
-            imagem="./imagens/logo.png"
-            qtdInscritos={3}
-            titulo="Circuito Tambor Dog"
-            uf="MG"
-          />
-          <CardEvento
-            cidade="Divinópolis"
-            data="20/10/2021"
-            imagem="./imagens/logo.png"
-            qtdInscritos={3}
-            titulo="Circuito Tambor Dog"
-            uf="MG"
-          />
+          {rsProvas.map((prova, indice) =>
+            <CardEvento
+              key={indice}
+              cidade={prova.cidade}
+              data={prova.dataHoraProva}
+              imagem="./imagens/logo.png"
+              qtdInscritos={0}
+              titulo={prova.nomeProva}
+              uf={prova.uf}
+            />
+          )}
 
         </Grid>
 
