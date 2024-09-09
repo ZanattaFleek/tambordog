@@ -50,31 +50,31 @@ export default function MenuInferior() {
       id: 1,
       menu: "Atleta",
       icon: "person_outline_outlined",
-      path: "/CrudAtleta",
+      path: "/admin/CrudAtleta",
     },
     {
       id: 2,
       menu: "Raça",
       icon: "pets",
-      path: "/CrudRaca",
+      path: "/admin/CrudRaca",
     },
     {
       id: 3,
       menu: "Categoria",
       icon: "military_tech",
-      path: "/CrudCategoria",
+      path: "/admin/CrudCategoria",
     },
     {
       id: 4,
       menu: "Campeonato",
       icon: "emoji_events",
-      path: "/CrudCampeonato",
+      path: "/admin/CrudCampeonato",
     },
     {
       id: 5,
       menu: "Prova",
       icon: "sports_score",
-      path: "/CrudProva",
+      path: "/admin/CrudProva",
     },
   ]
 
@@ -92,7 +92,7 @@ export default function MenuInferior() {
         <BottomNavigationAction
           label="Home"
           icon={<HomeIcon />}
-          onClick={() => irPara("/")}
+          onClick={() => irPara("/admin")}
         />
 
         {/*
