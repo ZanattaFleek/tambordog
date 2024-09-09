@@ -10,6 +10,7 @@ import CrudCampeonato from "../crud/CrudCampeonato"
 import CrudProva from "../crud/CrudProva"
 import Teste from "../testes/teste"
 import AppUsuario from "../AppUsuario"
+import LoginApp from "../app/LoginApp"
 
 export const RotasAPP = createBrowserRouter([
   {
@@ -17,8 +18,12 @@ export const RotasAPP = createBrowserRouter([
     element: <AppUsuario />,
     children: [
       {
-        path: "/Login",
-        element: <Login />,
+        path: "/LoginApp",
+        element: <LoginApp />,
+      },
+      {
+        path: "/CadastroUsuario",
+        element: <CadastroUsuario />,
       }
     ]
   },

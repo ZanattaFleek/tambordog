@@ -23,7 +23,7 @@ export default class ClsCategoriaController {
 
     AppDataSource.getRepository(entidade);
 
-    console.log('relations',relations)
+    // console.log('relations',relations)
 
     return AppDataSource.getRepository(entidade)
       .find({ where: where, select: select, relations: relations })

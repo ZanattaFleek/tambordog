@@ -6,7 +6,7 @@ import {
 } from "./globalstate/ContextoGlobal"
 import { useUsuarioState } from "./globalstate/UsuarioState"
 import { useLayoutState } from "./globalstate/LayoutState"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import Condicional from "./components/Condicional"
 import MenuInferior from "./layout/MenuInferior"
 import { ROTAS_LIVRES } from "./layout/ClsMenu"
@@ -61,6 +61,12 @@ export default function AppUsuario() {
     pesquisarEventos()
   }, [])
 
+  const nav = useNavigate()
+
+  const irPara = (url: string) => {
+    nav(url)
+  }
+
   return (
     <>
 
@@ -87,6 +93,7 @@ export default function AppUsuario() {
               <Button
                 key='btCadastrar'
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={() => irPara('/cadastrar')}
               >
                 Cadastrar
               </Button>
@@ -94,6 +101,7 @@ export default function AppUsuario() {
               <Button
                 key='btEntrar'
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={() => irPara('/login')}
               >
                 Entrar
               </Button>
@@ -136,6 +144,7 @@ export default function AppUsuario() {
             autoPlay
             loop
             controls
+            muted
           />
 
           <Typography
