@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import EventosEmAberto from "../eventos/EventosEmAberto"
 import AppAdmin from "../AppAdmin"
-import Login from "../login/Login"
+import Login from "../admin/login/Login"
 import CrudAtleta from "../crud/CrudAtleta"
 import CadastroUsuario from "../app/CadastroUsuario"
 import CrudRaca from "../crud/CrudRaca"
@@ -11,18 +11,23 @@ import CrudProva from "../crud/CrudProva"
 import Teste from "../testes/teste"
 import AppUsuario from "../AppUsuario"
 import LoginApp from "../app/LoginApp"
+import HomeSite from "../HomeSite"
 
 export const RotasAPP = createBrowserRouter([
   {
     path: "/",
+    element: <HomeSite />,
+  },
+  {
+    path: "/user",
     element: <AppUsuario />,
     children: [
       {
-        path: "/LoginApp",
+        path: "/user/LoginApp",
         element: <LoginApp />,
       },
       {
-        path: "/CadastroUsuario",
+        path: "/user/CadastroUsuario",
         element: <CadastroUsuario />,
       }
     ]

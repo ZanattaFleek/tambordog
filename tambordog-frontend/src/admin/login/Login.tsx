@@ -9,14 +9,14 @@ import {
   Paper,
 } from "@mui/material"
 
-import InputFormat from "../components/InputFormat"
-import InputPassword from "../components/InputPassword"
-import ClsValidacao from "../utils/ClsValidacao"
+import InputFormat from "../../components/InputFormat"
+import InputPassword from "../../components/InputPassword"
+import ClsValidacao from "../../utils/ClsValidacao"
 import { useNavigate } from "react-router-dom"
 import {
   ContextoGlobal,
   ContextoGlobalInterface,
-} from "../globalstate/ContextoGlobal"
+} from "../../globalstate/ContextoGlobal"
 
 export default function Login() {
   const [erros, setErros] = useState({})

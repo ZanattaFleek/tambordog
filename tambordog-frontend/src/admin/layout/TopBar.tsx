@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 import {
   ContextoGlobal,
   ContextoGlobalInterface,
-} from "../globalstate/ContextoGlobal"
+} from "../../globalstate/ContextoGlobal"
 
 export default function TopBar() {
   const { layoutState, setLayoutState } = useContext(
