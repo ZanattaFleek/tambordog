@@ -8,6 +8,9 @@ import Raca from "./entity/Raca";
 // import Sumula from "./entity/Sumula";
 import Campeonato from "./entity/Campeonato";
 import ProvaCategoria from "./entity/ProvaCategoria";
+import AtletaSessao from "./entity/AtletaSessao";
+import Usuario from "./entity/sistema/Usuario";
+import UsuarioSessao from "./entity/sistema/UsuarioSessao";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -21,12 +24,15 @@ export const AppDataSource = new DataSource({
   entities: [
     Cao,
     Atleta,
+    AtletaSessao,
     Categoria,
     Campeonato,
     // Inscricao,
     Prova,
     ProvaCategoria,
     Raca,
+    Usuario,
+    UsuarioSessao
     // Sumula,
   ],
   subscribers: [],

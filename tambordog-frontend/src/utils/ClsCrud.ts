@@ -42,10 +42,14 @@ export default class ClsCrud {
 
     // console.log('dados:', dados)
 
+    localStorage.setItem('Frank','BlaBalBla')
+
     const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,
       headers: {
         "Content-Type": "application/json",
+        // "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        "Authorization": "Bearer TesteDeTokenFrankPedro",
       },
     }
 
@@ -58,6 +62,8 @@ export default class ClsCrud {
         titulo: "",
       })
     }
+
+    console.log(URL_BACKEND.concat("/consultar"), JSON.stringify(dados), JSON.stringify(config))
 
     return axios
       .post<RespostaPadraoInterface<Array<any>>>(

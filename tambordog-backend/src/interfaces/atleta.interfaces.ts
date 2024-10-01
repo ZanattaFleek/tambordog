@@ -9,3 +9,10 @@ export interface AtletaInterface {
   senha: string;
   ativo: boolean;
 }
+
+export interface AtletaSessaoInterface {
+  idSessao?: string
+  idAtleta: string
+  token: string
+  ativo: boolean
+}
