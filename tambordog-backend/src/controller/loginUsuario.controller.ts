@@ -11,7 +11,7 @@ import ClsLoginUsuarioController from "./loginUsuario.controller.cls";
 @Controller()
 export class LoginUsuarioController {
     @Post("loginUsuario")
-    loginUsuario(
+    public loginUsuario(
         @Body("cpf") cpf: string,
         @Body("senha") senha: string
     ): Promise<RespostaPadraoInterface<String>> {
@@ -20,4 +20,5 @@ export class LoginUsuarioController {
 
 
     }
+
 }
