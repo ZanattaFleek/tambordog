@@ -13,6 +13,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: corsAutorizados });
   await AppDataSource.initialize();
+  // console.log('Banco de Dados Iniciado....')
   await app.listen(process.env.REACT_APP_BACKEND_PORTA);
 }
 bootstrap();

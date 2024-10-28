@@ -32,10 +32,12 @@ export default class ClsLoginUsuarioController {
                                 ativo: true,
                                 token: token
                             }).then(() => {
+                                // return AppDataSource.destroy().then(() => {
                                 retorno.ok = true
                                 retorno.mensagem = 'Login Realizado'
                                 retorno.dados = token
                                 return retorno
+                                // })
                             })
 
                         })
