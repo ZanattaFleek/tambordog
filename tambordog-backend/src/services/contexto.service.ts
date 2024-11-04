@@ -1,9 +1,7 @@
-import { Injectable, Scope, Inject } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { Request } from 'express';
+import { Injectable, Scope } from '@nestjs/common';
 
-@Injectable()
-export class ContextoService {
+@Injectable({ scope: Scope.REQUEST })
+export default class ContextoService {
 
     private usuario: string = 'Frank'
 
@@ -20,4 +18,5 @@ export class ContextoService {
     public getUsuario() {
         return this.usuario
     }
+
 }

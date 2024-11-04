@@ -1,22 +1,22 @@
-import { Injectable, CanActivate, ExecutionContext, Inject, Scope } from '@nestjs/common';
-import { Reflector, REQUEST } from '@nestjs/core';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { Roles } from './decorators/roles.decorators';
 import { Observable } from 'rxjs';
 import { SISTEMA_PERMISSOES } from './types/PermissaoTypes';
-import { ContextoService } from './services/contexto.service';
 
-@Injectable({scope: Scope.REQUEST})
+@Injectable()
 export class RolesGuard implements CanActivate {
-    constructor(private reflector: Reflector, private contextoService: ContextoService) { }
+    constructor(private reflector: Reflector) { }
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        console.log('Antes do GET....')
         const roles = this.reflector.get(Roles, context.getHandler());
 
         // const contextoService = this.reflector.get(ContextoService, context.getHandler());
         // console.log('contextoService',this.request.headers)
 
-        console.log('Dentro do Guarda de Permissões....', this.contextoService.getUsuario())
-        this.contextoService.setUsuario('Zanatta Dentro do Roles Guard....')
+        console.log('Dentro do Guarda de Permissões....')
+        // this.contextoService.setUsuario('Zanatta Dentro do Roles Guard....')
 
         // this.contextoService = new ContextoService(context.switchToHttp().getRequest())
 
@@ -33,7 +33,7 @@ export class RolesGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const user = request.user;
 
-        // console.log('request', request.headers.authorization)
+        console.log('request', request.headers.authorization)
 
         if (!roles) {
             return true;
