@@ -5,19 +5,17 @@ import { Resolver } from "dns";
 import { Roles } from "./decorators/roles.decorators";
 import { SISTEMA_PERMISSOES } from "./types/PermissaoTypes";
 import { RolesGuard } from "./roles.guard";
+import { Contexto } from "./decorators/contexto.decorators";
 
 @Controller()
 export class CrudController {
   constructor() { } //private readonly appService: AppService
 
   @Post("Teste")
-
-
   @Roles([{
     modulo: SISTEMA_PERMISSOES.PROVAS.MODULO,
     permissao: SISTEMA_PERMISSOES.PROVAS.PERMISSOES.LISTAR_PROVAS_EM_ABERTO
   }])
-
   teste(): string {
     return "Teste"
   }

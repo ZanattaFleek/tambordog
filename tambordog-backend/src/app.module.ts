@@ -5,14 +5,18 @@ import { AuthCrudMiddleware } from "./authCrud.middleware";
 import { LoginUsuarioController } from "./controller/loginUsuario.controller";
 import { APP_GUARD } from "@nestjs/core";
 import { RolesGuard } from "./roles.guard";
-import { ContextoService } from "./services/contexto.service";
+import ContextoService from "./services/contexto.service";
 
 @Module({
   imports: [],
   controllers: [CrudController, ProvaController, LoginUsuarioController],
-  providers: [ContextoService, {
+  providers: [{
     provide: APP_GUARD,
     useClass: RolesGuard,
+  },
+  {
+    provide: APP_GUARD,
+    useClass: ContextoService,
   }],
 })
 // export class AppModule {}
